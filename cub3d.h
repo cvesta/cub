@@ -6,7 +6,7 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 18:47:46 by cvesta            #+#    #+#             */
-/*   Updated: 2021/03/30 18:11:25 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/03/31 20:04:33 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ typedef struct	s_cub
 	int			up;
 	int 		down;
 	char		**map;
+	int			sizemapline;
+	int 		save;
 
 }				t_cub;
 
@@ -98,16 +100,34 @@ char	*ft_strchr(const char *s, int c);
 //parser
 int		parser(t_cub *cub, char *map);
 int		read_map(int fd, t_cub *cub);
+int		check_line_map(char *str);
+int		new_line_map(t_cub *cub, char line);
 
 //parser2
 int		parse_arg(t_cub *cub, char *str);
+int		arg_write_cub(t_cub *cub, char *str, int i);
+
+//parser3
+int		parse_r(t_cub *cub, char *str);
+int 	check_r(char **arr);
+int		check_empty_r(int width, int height, t_cub *cub);
+int		check_max_r(int width, int height, char **arr);
+
+//parser4
+int		parse_tex(t_textures *textures, char *str, int i);
+int 	check_empty_tex(t_textures *textures, char *str, int i);
+int		check_path(char *path);
+int		check_extension(char *path);
+
 
 //adds
 int		make_space(char c);
+void	clear_arr(char **arr);
 
 //check
 int		check_empty_arg(t_cub *cub, int map);
 int		check_argc(int ac, char *map, char *save);
+int		check_number(char *num);
 
 
 

@@ -44,3 +44,17 @@ int		check_empty_arg(t_cub *cub, int map)
 	}
 	return (1);
 }
+
+int		check_number(char *num)
+{
+	int		i;
+
+	i = 0;
+	while (num[i])
+	{
+		if (!ft_isdigit(num[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
