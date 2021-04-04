@@ -119,6 +119,10 @@ int 	check_empty_tex(t_textures *textures, char *str, int i);
 int		check_path(char *path);
 int		check_extension(char *path);
 
+//parser5
+int		parse_color(t_cub *cub, char *str);
+int		check_color(char **arr);
+
 
 //adds
 int		make_space(char c);
