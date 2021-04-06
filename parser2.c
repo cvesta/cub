@@ -46,7 +46,7 @@ int		arg_write_cub(t_cub *cub, char *str, int i)
 		ft_strncmp(str + i, "SO", 2) == 0 ||
 		ft_strncmp(str + i, "WE", 2) == 0 ||
 		ft_strncmp(str + i, "EA", 2) == 0 ||
-		(str[i] = 'S' && str[i + 1] == ' ')) &&
+		(str[i] == 'S' && str[i + 1] == ' ')) &&
 		!parse_tex(&cub->textures, str, i))
 		return (0);
 	if (((str[i] == 'F' && str[i + 1] == ' ') || (str[i] == 'C' && str[i + 1]

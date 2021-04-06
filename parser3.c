@@ -78,7 +78,7 @@ int		check_empty_r(int width, int height, t_cub *cub)
 
 int		check_max_r(int width, int height, char **arr)
 {
-	if ((ft_strlen(arr[0]) > 10 || ft_strlen(arr[1] > 10) ||
+	if ((ft_strlen(arr[0]) > 10 || ft_strlen(arr[1]) > 10) ||
 	(ft_strlen(arr[0]) > 1 && width < 1) ||
 	ft_strlen(arr[1]) > 1 && height < 1))
 	{

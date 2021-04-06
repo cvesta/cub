@@ -26,3 +26,8 @@ void	clear_arr(char **arr)
 		free(arr[i++]);
 	free(arr);
 }
+
+int		turn_hex(int t, int r, int g, int b)
+{
+	return (t << 24 | r << 16 | g << 8 | b);
+}

@@ -122,17 +122,22 @@ int		check_extension(char *path);
 //parser5
 int		parse_color(t_cub *cub, char *str);
 int		check_color(char **arr);
-
+int		check_empty_color(t_cub *cub, char *str);
+int		check_color_max_min(char *color);
 
 //adds
 int		make_space(char c);
 void	clear_arr(char **arr);
+int		turn_hex(int t, int r, int g, int b);
 
 //check
 int		check_empty_arg(t_cub *cub, int map);
 int		check_argc(int ac, char *map, char *save);
 int		check_number(char *num);
 
+//map_set
+int		check_map(char **map);
+int 	check_char_in_line(char *line);
 
 
 #endif

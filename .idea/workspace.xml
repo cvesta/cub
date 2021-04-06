@@ -7,8 +7,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eee9b6fb-4001-46ed-a5c4-083ca0edb5a0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/parser5.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/map_set.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adds.c" beforeDir="false" afterPath="$PROJECT_DIR$/adds.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cub3d.h" beforeDir="false" afterPath="$PROJECT_DIR$/cub3d.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parser2.c" beforeDir="false" afterPath="$PROJECT_DIR$/parser2.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parser3.c" beforeDir="false" afterPath="$PROJECT_DIR$/parser3.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parser5.c" beforeDir="false" afterPath="$PROJECT_DIR$/parser5.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +47,7 @@
     <property name="cf.first.check.clang-format" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C/C++" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -65,6 +70,8 @@
       <workItem from="1617200380782" duration="4576000" />
       <workItem from="1617273525116" duration="557000" />
       <workItem from="1617279827192" duration="1309000" />
+      <workItem from="1617709195760" duration="3490000" />
+      <workItem from="1617715370423" duration="3380000" />
     </task>
     <task id="LOCAL-00001" summary="meow">
       <created>1617123019552</created>
@@ -85,6 +92,18 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="meow" />
