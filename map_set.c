@@ -6,11 +6,13 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 16:23:16 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/06 17:43:48 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/06 17:49:21 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int 	check_vert(int j, char **map, char *vert)
 
 int		check_isolation(char *line)
 {

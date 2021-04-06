@@ -6,7 +6,7 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 18:47:46 by cvesta            #+#    #+#             */
-/*   Updated: 2021/03/31 20:04:33 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/06 18:05:54 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,9 @@ int		check_number(char *num);
 //map_set
 int		check_map(char **map);
 int 	check_char_in_line(char *line);
+int		check_isolation(char *line);
+int 	check_vert(int j, char **map, char *vert);
+
 
 
 #endif
