@@ -13,6 +13,26 @@
 #include "cub3d.h"
 
 int 	check_vert(int j, char **map, char *vert)
+{
+	int 	i;
+
+	while (--j >= 0)
+	{
+		i = 0;
+		while (map[i])
+		{
+			if (j < (int)ft_strlen(map[i]))
+				vert[i] = map[i][j];
+			else
+				vert[i] = ' ';
+			i++;
+		}
+		vert[i] = '\0';
+		if ((!check_isolation(vert)))
+			return (0);
+	}
+	return (1);
+}
 
 int		check_isolation(char *line)
 {

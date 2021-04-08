@@ -6,7 +6,7 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 18:47:46 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/06 18:05:54 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/08 19:07:10 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,12 @@ int 	check_char_in_line(char *line);
 int		check_isolation(char *line);
 int 	check_vert(int j, char **map, char *vert);
 
+//map_set2
+int		check_map_size(char **map);
+int		check_player(char **map);
+int		check_angle(char **map);
 
+//main
+int		main(int argc, char **argv);
 
 #endif
