@@ -6,7 +6,7 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 18:47:46 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/08 19:07:10 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/08 19:10:03 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,16 @@
 
 #  define BUFFER_SIZE	32
 
+typedef struct	s_texs
+{
+	t_image		*north;
+	t_image		*south;
+	t_image		*west;
+	t_image		*east;
+	t_image		*sprite;
+}				t_texs;
+
+
 typedef struct	s_textures
 {
 	char	*north;
@@ -31,6 +41,17 @@ typedef struct	s_textures
 	char	*east;
 	char	*sprite;
 }				t_textures;
+
+typedef struct	s_image
+{
+	void		*img;
+	int 		bpp;
+	int 		endian;
+	int 		width;
+	int 		height;
+	int 		len_line;
+	char		*addr;
+}				t_image;
 
 typedef struct	s_cub
 {
@@ -48,46 +69,6 @@ typedef struct	s_cub
 	int 		save;
 
 }				t_cub;
-
-//typedef struct	s_set
-//{
-//	int			lines;
-//
-//	int			columns;
-//	int			down_color;
-//	int			up_color;
-//	double		spin_speed;
-//	double		walk_speed;
-//	double		eye_level;
-//	double		fov;
-//	double		tile;
-//	double		updown_speed;
-//	char		**map;
-
-//}				t_set;
-
-typedef struct	s_image
-{
-
-}				t_image;
-
-//typedef struct	s_player
-//{
-//	float		x;
-//	float		y;
-//	float		width;
-//	float		height;
-//	float		spinangle;
-//	float		turnspeed;
-//	float		movespeed;
-//	double		spinspeed;
-//	double		eyelevel;
-//	int			directwalk;
-//	int			directturn;
-//	int			directwalk_lr;
-//
-//}				t_player;
-
 
 //get_next_line & utils
 int		get_next_line(int fd, char **line);
@@ -148,5 +129,8 @@ int		check_angle(char **map);
 
 //main
 int		main(int argc, char **argv);
+
+//setup
+void	setup_arg(t_cub *cub);
 
 #endif

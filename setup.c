@@ -6,46 +6,33 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 14:04:45 by cvesta            #+#    #+#             */
-/*   Updated: 2021/03/24 15:06:36 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/08 19:41:19 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	setup_player(t_cub *cub)
+void	setup_arg(t_cub *cub)
 {
-	cub->player.x = 0;
-	cub->player.y = 0;
-	cub->player.width = 0;
-	cub->player.height = 0;
-	cub->player.spinangle = 0;
-	cub->player.turnspeed = 0;
-	cub->player.walkspeed = 0;
-	cub->player.spinspeed = 0
-	cub->player.eyelevel = 0;
-	cub->player.directwalk = 0;
-	cub->player.directturn = 0;
-	cub->player.directwalk_lr = 0;
-}
+	cub->width = -1;
+	cub->height = -1;
+	cub->textures.north = NULL;
+	cub->textures.south = NULL;
+	cub->textures.west = NULL;
+	cub->textures.east = NULL;
+	cub->textures.sprite = NULL;
+	cub->texs.north = NULL;
+	cub->texs.south = NULL;
+	cub->texs.west = NULL;
+	cub->texs.east = NULL;
+	cub->texs.sprite = NULL;
+	cub->down = -1;
+	cub->up = - 1;
+	cub->map = NULL;
+	cub->img.img = NULL;
+	cub->save = 0;
+	cub->sizemapline = 0;
+	cub-> = 0;
+	setup_raysp(cub);
 
-void	setup_set(t_cub *cub)
-{
-	int i;
-
-	cub->set.width = 0;
-	cub->set.height = 0;
-	cub->set.columns = 0;
-	cub->set.lines = 0;
-	cub->set.tile = 0;
-	i = 0;
-	while (i < TEXTURES)
-		cub->set.texs[i++].textures_path = NULL;
-	cub->set.down_color = 0;
-	cub->set.up_color = 0;
-	cub->set.map = 0;
-	cub->set.spin_speed = .11;
-	cub->set.walk_speed = .11;
-	cub->set.updown_speed = 30;
-	cub->set.eye_level = 0;
-	cub->set.fov = 80 * M_PI / 180;
 }

@@ -6,10 +6,17 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 19:04:00 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/08 19:04:00 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/08 19:07:10 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int		main(int argc, char **argv);
+int		main(int argc, char **argv)
+{
+	t_cub cub;
+
+	if (!check_argc(argc, argv[1], argv[2]))
+		return (0);
+	setup_arg(&cub);
+}
