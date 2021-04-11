@@ -32,7 +32,7 @@ void	setup_arg(t_cub *cub)
 	cub->img.img = NULL;
 	cub->save = 0;
 	cub->sizemapline = 0;
-	cub-> = 0;
-	setup_raysp(cub);
+	//cub->raysp.numsprites = 0;
+	//setup_raysp(cub);
 
 }

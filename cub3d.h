@@ -6,14 +6,14 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 18:47:46 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/08 19:10:03 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/11 18:23:31 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include "mlx.h"
+# include "mlxlib/mlx.h"
 # include "libft/libft.h"
 # include <stdio.h>
 # include <unistd.h>
