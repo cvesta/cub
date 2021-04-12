@@ -6,7 +6,7 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 18:47:46 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/11 18:23:31 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/12 17:36:50 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,27 @@ typedef struct	s_image
 	char		*addr;
 }				t_image;
 
+typedef struct	t_raysprite
+{
+	int			numsprites;
+	double		sprite_x;
+	double		sprite_y;
+	double		invdet;
+	double		tx;
+	double		ty;
+	int			screen_x;
+	int 		height;
+	int 		width;
+	int 		start_x;
+	int			end_x;
+	int 		start_y;
+	int			end_y;
+	int 		tex_x;
+	int 		tex_y;
+	int 		*order;
+	double 		*distance;
+}				s_raysprite;
+
 typedef struct	s_cub
 {
 	t_image		img;
@@ -62,6 +83,7 @@ typedef struct	s_cub
 	int			height;
 	t_textures	textures;
 	t_texs		texs;
+	t_raysprite	raysprite;
 	int			up;
 	int 		down;
 	char		**map;

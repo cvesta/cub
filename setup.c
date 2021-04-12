@@ -6,11 +6,16 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 14:04:45 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/08 19:41:19 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/12 17:36:50 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	setup_raysp(t_cub *cub);
+{
+
+}
 
 void	setup_arg(t_cub *cub)
 {
@@ -32,7 +37,7 @@ void	setup_arg(t_cub *cub)
 	cub->img.img = NULL;
 	cub->save = 0;
 	cub->sizemapline = 0;
-	//cub->raysp.numsprites = 0;
-	//setup_raysp(cub);
+	cub->raysprite.numsprites = 0;
+	setup_raysp(cub);
 
 }
