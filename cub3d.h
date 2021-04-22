@@ -6,7 +6,7 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 18:47:46 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/12 17:36:50 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/22 19:02:38 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct	s_image
 	char		*addr;
 }				t_image;
 
-typedef struct	t_raysprite
+typedef struct	s_raysprite
 {
 	int			numsprites;
 	double		sprite_x;
@@ -72,7 +72,17 @@ typedef struct	t_raysprite
 	int 		tex_y;
 	int 		*order;
 	double 		*distance;
-}				s_raysprite;
+}				t_raysprite;
+
+typedef struct	s_keydown
+{
+	int			up;
+	int 		down;
+	int 		left;
+	int 		right;
+	int 		lookl;
+	int 		lookr;
+}				t_keydown;
 
 typedef struct	s_cub
 {
@@ -89,7 +99,7 @@ typedef struct	s_cub
 	char		**map;
 	int			sizemapline;
 	int 		save;
-
+	t_keydown	keydown;
 }				t_cub;
 
 //get_next_line & utils
@@ -132,6 +142,12 @@ int		check_color_max_min(char *color);
 int		make_space(char c);
 void	clear_arr(char **arr);
 int		turn_hex(int t, int r, int g, int b);
+void	clear(t_cub *cub);
+int 	wipe(t_cub *cub);
+
+//adds2
+void	wipe_image(t_cub *cub);
+void	wipe_textures(t_cub *cub);
 
 //check
 int		check_empty_arg(t_cub *cub, int map);
@@ -154,5 +170,6 @@ int		main(int argc, char **argv);
 
 //setup
 void	setup_arg(t_cub *cub);
+void	setup_raysp(t_cub *cub);
 
 #endif
