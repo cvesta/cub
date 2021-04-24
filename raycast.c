@@ -6,7 +6,7 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/11 17:58:53 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/11 18:29:51 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/24 20:52:49 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,8 @@ int		raycast(t_cub *cub)
 	cub->cub = mlx_new_window(cub->mlx, cub->width, cub->height, "cub3D");
 	mlx_hook(cub->cub, 17, (1L << 17), wipe, cub);
 	mlx_hook(cub->cub, 2, (1L << 0), keypress, cub);
+	mlx_hook(cub->cub, 3, (1L << 1), keyrelease, cub);
+	mlx_loop_hook(cub->mlx, loop, cub);
+	mlx_loop(cub->mlx);
+	return (1);
 }

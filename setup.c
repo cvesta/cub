@@ -26,12 +26,12 @@ void	setup_raysp(t_cub *cub)
 	cub->raysprite.end_x = 0;
 	cub->raysprite.tex_x = 0;
 	cub->raysprite.tex_y = 0;
-	cub->keydown.up = 0;
-	cub->keydown.down = 0;
-	cub->keydown.left = 0;
-	cub->keydown.right = 0;
-	cub->keydown.lookl = 0;
-	cub->keydown.lookr = 0;
+	cub->keypress.up = 0;
+	cub->keypress.down = 0;
+	cub->keypress.left = 0;
+	cub->keypress.right = 0;
+	cub->keypress.lookl = 0;
+	cub->keypress.lookr = 0;
 }
 
 void	setup_arg(t_cub *cub)

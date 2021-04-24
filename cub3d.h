@@ -6,7 +6,7 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 18:47:46 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/24 20:41:37 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/24 22:33:02 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,9 @@ typedef struct	s_cub
 	char		**map;
 	int			sizemapline;
 	int 		save;
-	t_keydown	keydown;
+	t_keydown	keypress;
 	t_raycast	raycast;
+	t_sprite	sprite;
 }				t_cub;
 
 typedef struct	s_raycast
@@ -79,8 +80,8 @@ typedef struct	s_raycast
 	double		pos_y;
 	double		dir_x;
 	double		dir_y;
-	double		plane_x;
-	double		plane_y;
+	double		flat_x;
+	double		flat_y;
 	double		camera_x;
 	double		raydir_x;
 	double 		raydir_y;
@@ -128,7 +129,7 @@ typedef struct	s_raysprite
 	double 		*distance;
 }				t_raysprite;
 
-typedef struct	s_keydown
+typedef struct	s_keypress
 {
 	int			up;
 	int 		down;
@@ -138,6 +139,11 @@ typedef struct	s_keydown
 	int 		lookr;
 }				t_keydown;
 
+typedef struct	s_sprite
+{
+	double		x;
+	double		y;
+}				t_sprite;
 //get_next_line & utils
 int		get_next_line(int fd, char **line);
 size_t	ft_strlen(const char *str);
@@ -212,7 +218,20 @@ void	setup_raysp(t_cub *cub);
 int		setup_textures(t_cub *cub);
 t_image	*make_tex(t_cub *cub, char *way);
 
+//setup3
+int		setup_player(t_cub *cub);
+int		player_direct(t_cub *cub, char c);
+int		player_flatness(t_cub *cub, char c);
+int		player_position(t_cub *cub, int x, int y);
+
+//sprite4
+int		setup_sprite(t_cub *cub);
+int		count_sprite(t_cub *cub);
+int		pos_sprite(t_cub *cub);
+
 //raycast
 int		raycast(t_cub *cub);
+int		keyrelease(int keycode, t_cub *cub);
+int		keypress(int keycode, t_cub *cub);
 
 #endif
