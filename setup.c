@@ -57,3 +57,4 @@ void	setup_arg(t_cub *cub)
 	cub->raysprite.numsprites = 0;
 	setup_raysp(cub);
 }
+

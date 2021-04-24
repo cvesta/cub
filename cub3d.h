@@ -6,7 +6,7 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 18:47:46 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/22 19:02:38 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/24 20:41:37 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,25 +23,6 @@
 
 #  define BUFFER_SIZE	32
 
-typedef struct	s_texs
-{
-	t_image		*north;
-	t_image		*south;
-	t_image		*west;
-	t_image		*east;
-	t_image		*sprite;
-}				t_texs;
-
-
-typedef struct	s_textures
-{
-	char	*north;
-	char	*south;
-	char	*west;
-	char	*east;
-	char	*sprite;
-}				t_textures;
-
 typedef struct	s_image
 {
 	void		*img;
@@ -52,6 +33,79 @@ typedef struct	s_image
 	int 		len_line;
 	char		*addr;
 }				t_image;
+
+typedef struct	s_texs
+{
+	t_image		*north;
+	t_image		*south;
+	t_image		*west;
+	t_image		*east;
+	t_image		*sprite;
+}				t_texs;
+
+typedef struct	s_cub
+{
+	t_image		img;
+	void		*cub;
+	void		*mlx;
+	int			width;
+	int			height;
+	t_textures	textures;
+	t_texs		texs;
+	t_raysprite	raysprite;
+	int			up;
+	int 		down;
+	char		**map;
+	int			sizemapline;
+	int 		save;
+	t_keydown	keydown;
+	t_raycast	raycast;
+}				t_cub;
+
+typedef struct	s_raycast
+{
+	int			map_x;
+	int 		map_y;
+	int			step_x;
+	int			step_y;
+	int			hit;
+	int 		side;
+	int 		height_line;
+	int 		draw_start;
+	int 		draw_end;
+	int			texture_x;
+	int			texture_y;
+	double		pos_x;
+	double		pos_y;
+	double		dir_x;
+	double		dir_y;
+	double		plane_x;
+	double		plane_y;
+	double		camera_x;
+	double		raydir_x;
+	double 		raydir_y;
+	double		side_y;
+	double		side_x;
+	double		deltadist_x;
+	double		deltadist_y;
+	double		perpwalldist;
+	double		movespeed;
+	double		wall_x;
+	double		step;
+	double		texpos;
+	double		*zbuffer;
+}				t_raycast;
+
+typedef struct	s_textures
+{
+	char	*north;
+	char	*south;
+	char	*west;
+	char	*east;
+	char	*sprite;
+}				t_textures;
+
+
 
 typedef struct	s_raysprite
 {
@@ -83,24 +137,6 @@ typedef struct	s_keydown
 	int 		lookl;
 	int 		lookr;
 }				t_keydown;
-
-typedef struct	s_cub
-{
-	t_image		img;
-	void		*cub;
-	void		*mlx;
-	int			width;
-	int			height;
-	t_textures	textures;
-	t_texs		texs;
-	t_raysprite	raysprite;
-	int			up;
-	int 		down;
-	char		**map;
-	int			sizemapline;
-	int 		save;
-	t_keydown	keydown;
-}				t_cub;
 
 //get_next_line & utils
 int		get_next_line(int fd, char **line);
@@ -171,5 +207,12 @@ int		main(int argc, char **argv);
 //setup
 void	setup_arg(t_cub *cub);
 void	setup_raysp(t_cub *cub);
+
+//setup2
+int		setup_textures(t_cub *cub);
+t_image	*make_tex(t_cub *cub, char *way);
+
+//raycast
+int		raycast(t_cub *cub);
 
 #endif

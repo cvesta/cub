@@ -19,9 +19,9 @@ int		raycast(t_cub *cub)
 
 	if (!(cub->mlx = mlx_init()))
 		return (0);
-	if (!setup_textures)
+	if (!setup_textures(cub))
 	{
-		clear_textures(cub);
+		wipe_textures(cub);
 		return (0);
 	}
 	mlx_get_screen_size(cub->mlx, &widt_h, &heigh_t);
@@ -30,5 +30,6 @@ int		raycast(t_cub *cub)
 	if (cub->height > heigh_t)
 		cub->height = heigh_t;
 	cub->cub = mlx_new_window(cub->mlx, cub->width, cub->height, "cub3D");
-	mlx_hook(cub->cub, 17, (1L << 17), )
+	mlx_hook(cub->cub, 17, (1L << 17), wipe, cub);
+	mlx_hook(cub->cub, 2, (1L << 0), keypress, cub);
 }

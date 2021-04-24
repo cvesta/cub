@@ -6,7 +6,7 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 18:04:11 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/22 19:02:38 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/24 17:45:28 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,11 @@ int 	wipe(t_cub *cub)
 {
 	clear(cub);
 	wipe_image(cub);
-
+	wipe_textures(cub);
+	mlx_destroy_window(cub->mlx, cub->cub);
+	if (cub->raycast.zbuffer)
+		free(cub->raycast.zbuffer);
+	ft_putstr_fd("the end\n", 1);
+	exit (0);
+	return (1);
 }

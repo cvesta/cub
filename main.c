@@ -19,4 +19,19 @@ int		main(int argc, char **argv)
 	if (!check_argc(argc, argv[1], argv[2]))
 		return (0);
 	setup_arg(&cub);
+	if (argc == 3)
+		cub.save = 1;
+	if (!parser(&cub, argv[1]))
+	{
+		clear(&cub);
+		return (0);
+	}
+	if (!setup_player(&cub) || !setup_sprite(&cub) || !raycast(&cub))
+	{
+		ft_putstr_fd("error\nsetting up error\n", 1);
+		clear(&cub);
+		return (0);
+	}
+	clear(&cub);
+	return (1);
 }
