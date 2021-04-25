@@ -234,4 +234,11 @@ int		raycast(t_cub *cub);
 int		keyrelease(int keycode, t_cub *cub);
 int		keypress(int keycode, t_cub *cub);
 
+//move
+void	back(t_cub *cub);
+void	sideways(t_cub *cub);
+void	rotate(t_cub *cub, int x);
+
+
+
 #endif
