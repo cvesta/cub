@@ -37,3 +37,35 @@ int		raycast(t_cub *cub)
 	mlx_loop(cub->mlx);
 	return (1);
 }
+
+int		loop(t_cub *cub)
+{
+	int		a;
+
+	a = 0;
+	wipe_image(cub);
+	img_make(cub);
+	paint_texs(cub);
+	if (!monitor_sprites(cub))
+	{
+		wipe(cub);
+		return (0);
+	}
+	if (cub->save == 1)
+	{
+		cub->save = 0;
+		save_to_bmp(win);
+		wipe(cub);
+		return (0);
+	}
+	move(cub);
+	mlx_put_image_to_window(cub->mlx, cub->cub, cub->img.img, 0, 0);
+	return (1);
+}
+
+void	img_make(t_cub *cub)
+{
+	win->img.img = mlx_new_image(win->mlx, win->width, win->height);
+	win->img.addr = mlx_get_data_addr(win->img.img, &win->img.bpp,\
+			&win->img.line_length, &win->img.endian);
+}

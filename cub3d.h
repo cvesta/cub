@@ -233,6 +233,8 @@ int		pos_sprite(t_cub *cub);
 int		raycast(t_cub *cub);
 int		keyrelease(int keycode, t_cub *cub);
 int		keypress(int keycode, t_cub *cub);
+int		move(t_cub *cub);
+void	img_make(t_cub *cub);
 
 //move
 void	back(t_cub *cub);
