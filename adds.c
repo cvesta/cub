@@ -6,7 +6,7 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 18:04:11 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/24 17:45:28 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/25 15:08:54 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ void	clear(t_cub *cub)
 	if (map)
 		clear_arr(map);
 	free(cub->textures.north);
-	free(cub->textures.south)
-	free(cub->textures.west)
-	free(cub->textures.east)
-	free(cub->textures.sprite)
+	free(cub->textures.south);
+	free(cub->textures.west);
+	free(cub->textures.east);
+	free(cub->textures.sprite);
 }
 
 int		turn_hex(int t, int r, int g, int b)

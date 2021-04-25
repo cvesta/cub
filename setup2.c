@@ -36,15 +36,15 @@ t_image	*make_tex(t_cub *cub, char *way)
 
 int		setup_textures(t_cub *cub)
 {
-	if ((cub->texs.south = make_tex(cub, cub->texs.south)) == NULL)
+	if ((cub->texs.south = make_tex(cub, cub->textures.south)) == NULL)
 		return (0);
-	if ((cub->texs.north = make_tex(cub, cub->texs.north)) == NULL)
+	if ((cub->texs.north = make_tex(cub, cub->textures.north)) == NULL)
 		return (0);
-	if ((cub->texs.west = make_tex(cub, cub->texs.west)) == NULL)
+	if ((cub->texs.west = make_tex(cub, cub->textures.west)) == NULL)
 		return (0);
-	if ((cub->texs.east = make_tex(cub, cub->texs.east)) == NULL)
+	if ((cub->texs.east = make_tex(cub, cub->textures.east)) == NULL)
 		return (0);
-	if ((cub->texs.sprite = make_tex(cub, cub->texs.sprite)) == NULL)
+	if ((cub->texs.sprite = make_tex(cub, cub->textures.sprite)) == NULL)
 		return (0);
 	return (1);
 }

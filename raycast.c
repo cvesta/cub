@@ -6,11 +6,39 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/11 17:58:53 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/24 20:52:49 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/25 17:27:23 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	classify_spr(int *order, double  *len, int num)
+{
+	int		i;
+	int		j;
+	int		tmp1;
+	double	tmp2;
+
+	i = 0;
+	while (i < num - 1)
+	{
+		j = 0;
+		while (j < num - i - 1)
+		{
+			if (len[j] < len[j + 1])
+			{
+				tmp1 = order[j];
+				order[j] = order[j + 1];
+				order[j + 1] = tmp1;
+				tmp2 = len[j];
+				len[j] = len[j + 1];
+				len[j + 1] = tmp2;
+			}
+			j++;
+		}
+		i++;
+	}
+}
 
 int		raycast(t_cub *cub)
 {
@@ -54,7 +82,7 @@ int		loop(t_cub *cub)
 	if (cub->save == 1)
 	{
 		cub->save = 0;
-		save_to_bmp(win);
+		save_to_bmp(cub);
 		wipe(cub);
 		return (0);
 	}
@@ -65,7 +93,23 @@ int		loop(t_cub *cub)
 
 void	img_make(t_cub *cub)
 {
-	win->img.img = mlx_new_image(win->mlx, win->width, win->height);
-	win->img.addr = mlx_get_data_addr(win->img.img, &win->img.bpp,\
-			&win->img.line_length, &win->img.endian);
+	cub->img.img = mlx_new_image(cub->mlx, cub->width, cub->height);
+	cub->img.addr = mlx_get_data_addr(cub->img.img, &cub->img.bpp,\
+			&cub->img.len_line, &cub->img.endian);
+}
+
+void	paint_texs(t_cub *cub)
+{
+	int		a;
+
+	a = 0;
+	while (a < cub->width)
+	{
+		setup_raycast(cub, a);
+		setup_sided(cub);
+		setup_hit(cub);
+		monitor_raycast(cub, a);
+		cub->raycast.zbuffer[a] = cub->raycast.perpwalldist;
+		a++;
+	}
 }

@@ -42,17 +42,17 @@ int		check_color_max_min(char *color)
 	i = ft_atoi(color);
 	if(!(i >= 0 && i <= 255))
 	{
-		ft_putstr_fd("error\nwrong color\n");
+		ft_putstr_fd("error\nwrong color\n", 1);
 		return (0);
 	}
 	if (ft_strlen(color) > 1 && i < 1)
 	{
-		ft_putstr_fd("error\nthe value exceeds the max\n");
+		ft_putstr_fd("error\nthe value exceeds the max\n", 1);
 		return (0);
 	}
 	if (ft_strlen(color) > 10)
 	{
-		ft_putstr_fd("error\nthe value exceeds the max\n");
+		ft_putstr_fd("error\nthe value exceeds the max\n", 1);
 	}
 	return (1);
 }

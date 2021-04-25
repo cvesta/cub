@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   motion.c	   	                                    :+:      :+:    :+:   */
+/*   motion.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/24 22:29:02 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/24 22:38:54 by cvesta           ###   ########.fr       */
+/*   Created: 2021/04/24 17:08:36 by cvesta            #+#    #+#             */
+/*   Updated: 2021/04/25 17:19:19 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int		move(t_cub *cub)
+void		move(t_cub *cub)
 {
-	if (cub->keypress.up == 1 || cub->keypress.down == 1)
+	if (cub->keypress.up == 1 ||
+		cub->keypress.down == 1)
 		back(cub);
-	if (cub->keypress.left == 1 || cub->keypress.right == 1)
+	if (cub->keypress.left == 1 ||
+		cub->keypress.right == 1)
 		sideways(cub);
 	if (cub->keypress.lookl == 1)
 		rotate(cub, 1);

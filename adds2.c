@@ -47,3 +47,16 @@ void	wipe_textures(t_cub *cub)
 		free(cub->texs.sprite);
 	}
 }
+
+void	mlx_pixel_put_(t_image *image, int x, int y, int colour)
+{
+	unsigned char	*dest;
+
+	dest = (unsigned char *)&colour;
+	image->addr[y * image->len_line + x *\
+		(image->bpp / 8)] = dest[0];
+	image->addr[y * image->len_line + x *\
+		(image->bpp / 8) + 1] = dest[1];
+	image->addr[y * image->len_line + x *\
+		(image->bpp / 8) + 2] = dest[2];
+}

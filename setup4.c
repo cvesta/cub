@@ -6,13 +6,13 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 22:00:19 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/24 22:12:03 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/25 17:39:02 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int		pos_sprite(t_cub *cub)
+void	pos_sprite(t_cub *cub)
 {
 	int		x;
 	int		y;
@@ -71,6 +71,6 @@ int		setup_sprite(t_cub *cub)
 		return (0);
 	if (!(cub->raycast.zbuffer = malloc(sizeof(double) * cub->width)))
 		return (0);
-	pos_sprite(win);
-	return (SUCCESS);
+	pos_sprite(cub);
+	return (1);
 }

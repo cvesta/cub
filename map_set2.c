@@ -6,7 +6,7 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 18:37:13 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/08 18:51:16 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/25 17:11:52 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int		check_player(char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			if (map[i][j] == 'N' || map[i][j] = 'S' || map[i][j] == 'W' ||
-					map[i][j] == 'E')
+			if (map[i][j] == 'N' || map[i][j] == 'S' ||
+				map[i][j] == 'W' || map[i][j] == 'E')
 				count++;
 			j++;
 		}
@@ -75,7 +75,7 @@ int		check_angle(char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			if (mapi][j] == '0')
+			if (map[i][j] == '0')
 			{
 				if ((!map[i - 1][j - 1] || map[i - 1][j - 1] == ' ') ||
 				(!map[i + 1][j + 1] || map[i + 1][j  + 1] == ' ') || (!map[i

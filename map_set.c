@@ -6,7 +6,7 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 16:23:16 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/06 17:49:21 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/25 17:10:40 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int		check_isolation(char *line)
 		i++;
 	}
 	free(t_line);
-	clear_arr(1);
+	clear_arr(arr);
 	return (1);
 }
 
@@ -99,7 +99,7 @@ int		check_map(char **map)
 	}
 	if (!(vert_line = malloc(sizeof(char) * i + 1)))
 		return (0);
-	if (!check_vert(j, map, vert))
+	if (!check_vert(j, map, vert_line))
 		return (0);
 	free(vert_line);
 	if (!check_map_size(map))

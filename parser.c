@@ -6,13 +6,13 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 15:09:29 by cvesta            #+#    #+#             */
-/*   Updated: 2021/03/31 20:04:33 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/25 17:23:06 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int		new_line_map(t_cub *cub, char line)
+int		new_line_map(t_cub *cub, char *line)
 {
 	char	**arr;
 	int 	i;
@@ -77,7 +77,7 @@ int		parser(t_cub *cub, char *map)
 {
 	int		fd;
 
-	fd = open(file, O_RDONLY);
+	fd = open(map, O_RDONLY);
 	if (!read_map(fd, cub) || !check_empty_arg(cub, 1))
 		return (0);
 	if (fd == -1)
