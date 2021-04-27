@@ -12,69 +12,69 @@
 
 #include "cub3d.h"
 
-int		parse_tex(t_textures *textures, char *str, int i)
+int			parse_tex(t_textures *texture, char *str, int a)
 {
-	char	*path;
-	int		j;
+	char	*way;
+	int		z;
 
-	j = i + 2;
-	while (str[j] && make_space(str[j]))
-		j++;
-	path = str + j;
-	if (!check_empty_tex(textures, str, i))
+	z = a + 2;
+	while (str[z] && make_space(str[z]))
+		z++;
+	way = str + z;
+	if (!if_tex_empty(texture, str, a))
 		return (0);
-	if (check_path(path) && check_extension(path))
+	if (!check_path(way) && !check_extension(way))
 		return (0);
-	if ((ft_strncmp(str + i, "NO", 2) == 0) && !textures->north)
-		textures->north = ft_strdup(path);
-	if ((ft_strncmp(str + i, "SO", 2) == 0) && !textures->south)
-		textures->south = ft_strdup(path);
-	if ((ft_strncmp(str + i, "WE", 2) == 0) && !textures->west)
-		textures->west = ft_strdup(path);
-	if ((ft_strncmp(str + i, "EA", 2) == 0) && !textures->east)
-		textures->east = ft_strdup(path);
-	if ((str[i] == 'S' && str[i + 1] == ' ') && !textures->sprite)
-		textures->sprite = ft_strdup(path);
+	if ((ft_strncmp(str + a, "NO", 2) == 0) && !texture->north)
+		texture->north = ft_strdup(way);
+	if ((ft_strncmp(str + a, "SO", 2) == 0) && !texture->south)
+		texture->south = ft_strdup(way);
+	if ((ft_strncmp(str + a, "WE", 2) == 0) && !texture->west)
+		texture->west = ft_strdup(way);
+	if ((ft_strncmp(str + a, "EA", 2) == 0) && !texture->east)
+		texture->east = ft_strdup(way);
+	if ((str[a] == 'S' && str[a + 1] == ' ') && !texture->s)
+		texture->s = ft_strdup(way);
 	return (1);
 }
 
-int		check_empty_tex(t_textures *textures, char *str, int i)
+int			if_tex_empty(t_textures *texture, char *str, int i)
 {
-	if ((ft_strncmp(str + i, "NO", 2) == 0 && textures->north) ||
-		(ft_strncmp(str + i, "SO", 2) == 0 && textures->south) ||
-		(ft_strncmp(str + i, "WE", 2) == 0 && textures->west) ||
-		(ft_strncmp(str + i, "EA", 2) == 0 && textures->east))
+	if ((ft_strncmp(str + i, "NO", 2) == 0 && texture->north) ||
+		(ft_strncmp(str + i, "SO", 2) == 0 && texture->south) ||
+		(ft_strncmp(str + i, "WE", 2) == 0 && texture->west) ||
+		(ft_strncmp(str + i, "EA", 2) == 0 && texture->east))
 	{
-		ft_putstr_fd("error\nnot empty tex\n", 1);
+		ft_putstr_fd(":(\ntex is empty\n", 1);
 		return (0);
 	}
-	if ((str[i] == 'S' && str[i + 1] == ' ') && textures->sprite)
+	if ((str[i] == 'S' && str[i + 1] == ' ') && texture->s)
 	{
-		ft_putstr_fd("error\nnot empty tex\n", 1);
+		ft_putstr_fd(":(\ntex is empty\n", 1);
 		return (0);
 	}
 	return (1);
 }
 
-int		check_path(char *path)
+int			check_path(char *way)
 {
 	int		fd;
 
-	fd = open(path, O_RDONLY);
+	fd = open(way, O_RDONLY);
 	if (fd == -1)
 	{
-		ft_putstr_fd("error\nno such file or directory\n", 1);
+		ft_putstr_fd(":(\nno such file or dir\n", 1);
 		return (0);
 	}
 	close(fd);
 	return (1);
 }
 
-int		check_extension(char *path)
+int			check_extension(char *way)
 {
-	if (ft_strncmp(path + ft_strlen(path) - 4, ".xpm", 4) != 0)
+	if (ft_strncmp(way + ft_strlen(way) - 4, ".xpm", 4) != 0)
 	{
-		ft_putstr_fd("error\ninvalid file extension\n", 1);
+		ft_putstr_fd(":(\nincorrect extension\n", 1);
 		return (0);
 	}
 	return (1);

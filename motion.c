@@ -6,24 +6,24 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 17:08:36 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/25 17:19:19 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/27 22:11:04 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void		move(t_cub *cub)
+void	move(t_cub *cub)
 {
 	if (cub->keypress.up == 1 ||
 		cub->keypress.down == 1)
 		back(cub);
 	if (cub->keypress.left == 1 ||
 		cub->keypress.right == 1)
-		sideways(cub);
+		sidelong(cub);
 	if (cub->keypress.lookl == 1)
-		rotate(cub, 1);
+		revolve(cub, 1);
 	if (cub->keypress.lookr == 1)
-		rotate(cub, -1);
+		revolve(cub, -1);
 }
 
 int		keyrelease(int keycode, t_cub *cub)
@@ -36,9 +36,11 @@ int		keyrelease(int keycode, t_cub *cub)
 		cub->keypress.left = 0;
 	if (keycode == 2 && cub->keypress.right == 1)
 		cub->keypress.right = 0;
-	if (keycode == 123 && cub->keypress.lookl == 1)
+	if (keycode == 123 &&
+		cub->keypress.lookl == 1)
 		cub->keypress.lookl = 0;
-	if (keycode == 124 && cub->keypress.lookr == 1)
+	if (keycode == 124 &&
+		cub->keypress.lookr == 1)
 		cub->keypress.lookr = 0;
 	return (1);
 }

@@ -6,14 +6,14 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 18:47:46 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/25 17:40:45 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/27 23:22:09 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include "mlxlib/mlx.h"
+# include "mlx/mlx.h"
 # include "libft/libft.h"
 # include <stdio.h>
 # include <unistd.h>
@@ -21,244 +21,228 @@
 # include <math.h>
 # include <stdlib.h>
 
-typedef struct	s_image
+typedef struct		s_image
 {
-	void		*img;
-	int 		bpp;
-	int 		endian;
-	int 		width;
-	int 		height;
-	int 		len_line;
-	char		*addr;
-}				t_image;
+	void			*image;
+	char			*addr;
+	int				bpp;
+	int				len_line;
+	int				endian;
+	int				width;
+	int				height;
+}					t_image;
 
-typedef struct	s_textures
+typedef struct		s_textures
 {
-	char	*north;
-	char	*south;
-	char	*west;
-	char	*east;
-	char	*sprite;
-}				t_textures;
+	char			*north;
+	char			*south;
+	char			*west;
+	char			*east;
+	char			*s;
+}					t_textures;
 
-typedef struct	s_texs
+typedef struct		s_tex
 {
-	t_image		*north;
-	t_image		*south;
-	t_image		*west;
-	t_image		*east;
-	t_image		*sprite;
-}				t_texs;
+	t_image			*south;
+	t_image			*north;
+	t_image			*west;
+	t_image			*east;
+	t_image			*s;
+}					t_tex;
 
-typedef struct	s_keypress
+typedef struct		s_keypress
 {
-	int			up;
-	int 		down;
-	int 		left;
-	int 		right;
-	int 		lookl;
-	int 		lookr;
-}				t_keypress;
+	int				up;
+	int				down;
+	int				left;
+	int				right;
+	int				lookl;
+	int				lookr;
+}					t_keypress;
 
-typedef struct	s_raycast
+typedef struct		s_ray
 {
-	int			map_x;
-	int 		map_y;
-	int			step_x;
-	int			step_y;
-	int			hit;
-	int 		side;
-	int 		height_line;
-	int 		draw_start;
-	int 		draw_end;
-	int			texture_x;
-	int			texture_y;
-	double		pos_x;
-	double		pos_y;
-	double		dir_x;
-	double		dir_y;
-	double		flat_x;
-	double		flat_y;
-	double		camera_x;
-	double		raydir_x;
-	double 		raydir_y;
-	double		side_y;
-	double		side_x;
-	double		deltadist_x;
-	double		deltadist_y;
-	double		perpwalldist;
-	double		movespeed;
-	double		wall_x;
-	double		step;
-	double		texpos;
-	double		*zbuffer;
-}				t_raycast;
+	double			x_posit;
+	double			y_posit;
+	double			x_dir;
+	double			y_dir;
+	double			x_flat;
+	double			y_flat;
+	double			x_cam;
+	double			x_raydir;
+	double			y_raydir;
+	int				x_map;
+	int				y_map;
+	double			x_side;
+	double			y_side;
+	double			x_deltad;
+	double			y_deltad;
+	double			len_ray;
+	int				x_step;
+	int				y_step;
+	int				hit;
+	int				side;
+	int				height_line;
+	int				draw_start;
+	int				draw_end;
+	double			mvspeed;
+	double			x_wall;
+	int				x_tex;
+	int				y_tex;
+	double			step;
+	double			posit_tex;
+	double			*zbuffer;
+}					t_ray;
 
-typedef struct	s_raysprite
+typedef struct		s_rsp
 {
-	int			numsprites;
-	double		sprite_x;
-	double		sprite_y;
-	double		invdet;
-	double		tx;
-	double		ty;
-	int			screen_x;
-	int 		height;
-	int 		width;
-	int 		start_x;
-	int			end_x;
-	int 		start_y;
-	int			end_y;
-	int 		tex_x;
-	int 		tex_y;
-	int 		*order;
-	double 		*distance;
-}				t_raysprite;
+	int				numsprites;
+	double			x_sprite;
+	double			y_sprite;
+	double			invdet;
+	double			tx;
+	double			ty;
+	int				x_screen;
+	int				height;
+	int				y_start;
+	int				y_end;
+	int				width;
+	int				x_start;
+	int				x_end;
+	int				x_tex;
+	int				y_tex;
+	int				*order;
+	double			*distance;
+}					t_rsp;
 
-typedef struct	s_sprite
+typedef struct		s_sprite
 {
-	double		x;
-	double		y;
-}				t_sprite;
+	double			x;
+	double			y;
+}					t_sprite;
 
-typedef struct	s_cub
+typedef struct		s_cub
 {
-	t_image		img;
-	void		*cub;
-	void		*mlx;
-	int			width;
-	int			height;
-	t_textures	textures;
-	t_texs		texs;
-	t_raysprite	raysprite;
-	int			up;
-	int 		down;
-	char		**map;
-	int			sizemapline;
-	int 		save;
-	t_keypress	keypress;
-	t_raycast	raycast;
-	t_sprite	*sprite;
-}				t_cub;
+	void			*mlx;
+	void			*cub;
+	int				width;
+	int				height;
+	t_textures		texture;
+	t_tex			tex;
+	t_image			image;
+	int				floor;
+	int				ceiling;
+	char			**map;
+	int				line_size;
+	t_keypress		keypress;
+	t_ray			ray;
+	t_rsp			rsp;
+	int				save;
+	t_sprite		*sprite;
+}					t_cub;
 
-typedef struct	s_pix
+typedef struct		s_pixel
 {
-	unsigned char r;
-	unsigned char g;
-	unsigned char b;
-}				t_pix;
+	unsigned char	r;
+	unsigned char	g;
+	unsigned char	b;
+}					t_pixel;
 
-//parser
-int		parser(t_cub *cub, char *map);
-int		read_map(int fd, t_cub *cub);
-int		check_line_map(char *str);
-int		new_line_map(t_cub *cub, char *line);
+int					make_space(char c);
+void				free_array(char **array);
+void				free_all(t_cub *cub);
+int					turn_hex(int t, int r, int g, int b);
+int					wipe(t_cub *cub);
 
-//parser2
-int		parse_arg(t_cub *cub, char *str);
-int		arg_write_cub(t_cub *cub, char *str, int i);
+void				wipe_image(t_cub *cub);
+void				wipe_textures(t_cub *cub);
+void				pxl_put(t_image *image, int x, int y, int colour);
 
-//parser3
-int		parse_r(t_cub *cub, char *str);
-int 	check_r(char **arr);
-int		check_empty_r(int width, int height, t_cub *cub);
-int		check_max_r(int width, int height, char **arr);
+int					bmp(t_cub *cub);
+void				type_header(int fd, t_cub *cub, unsigned int pix_line,
+					unsigned int fill_bytes_line);
+void				save_pixels(int fd, t_cub *cub, unsigned int pix_line,
+					unsigned int fill_bytes_line);
 
-//parser4
-int		parse_tex(t_textures *textures, char *str, int i);
-int 	check_empty_tex(t_textures *textures, char *str, int i);
-int		check_path(char *path);
-int		check_extension(char *path);
+int					check_argc(int argc, char *map, char *save);
+int					if_arg_empty(t_cub *cub, int check_map);
+int					check_number(char *str);
 
-//parser5
-int		parse_color(t_cub *cub, char *str);
-int		check_color(char **arr);
-int		check_empty_color(t_cub *cub, char *str);
-int		check_color_max_min(char *color);
+int					main(int argc, char **argv);
 
-//adds
-int		make_space(char c);
-void	clear_arr(char **arr);
-int		turn_hex(int t, int r, int g, int b);
-void	clear(t_cub *cub);
-int 	wipe(t_cub *cub);
-//adds2
+int					check_vert(int j, char **map, char *vert);
+int					check_insulation(char *line);
+int					check_char(char *line);
+int					check_map(char **map);
 
-void	wipe_image(t_cub *cub);
-void	wipe_textures(t_cub *cub);
-void	mlx_pixel_put_(t_image *image, int x, int y, int colour);
-//check
-int		check_empty_arg(t_cub *cub, int map);
-int		check_argc(int ac, char *map, char *save);
-int		check_number(char *num);
+int					check_map_size(char **map);
+int					check_player(char **map);
+int					check_angle(char **map);
 
-//map_set
-int		check_map(char **map);
-int 	check_char_in_line(char *line);
-int		check_isolation(char *line);
-int 	check_vert(int j, char **map, char *vert);
+void				monitor_raycast(t_cub *win, int x);
+void				count_wall_pos_t(t_cub *win);
+void				count_draw(t_cub *win);
+void				depict_raycast(t_cub *win, int x);
 
-//map_set2
-int		check_map_size(char **map);
-int		check_player(char **map);
-int		check_angle(char **map);
+int					monitor_sprites(t_cub *cub);
+void				count_depict(t_cub *cub, int *order_sp, int i);
+void				paint_sprites(t_cub *cub);
+void				depict_sprite(t_cub *cub, int y, t_image *tex, int band);
+void				run_sprites(t_cub *cub, int *order_sp);
 
-//main
-int		main(int argc, char **argv);
+void				move(t_cub *cub);
+int					keyrelease(int keycode, t_cub *cub);
+int					keypress(int keycode, t_cub *cub);
 
-//setup
-void	setup_arg(t_cub *cub);
-void	setup_raysp(t_cub *cub);
-void	setup_raycast(t_cub *cub, int a);
-void	setup_sided(t_cub *cub);
-void	setup_hit(t_cub *cub);
-//setup2
-int		setup_textures(t_cub *cub);
-t_image	*make_tex(t_cub *cub, char *way);
+void				back(t_cub *win);
+void				sidelong(t_cub *win);
+void				revolve(t_cub *win, int a);
 
-//setup3
-int		setup_player(t_cub *cub);
-int		player_direct(t_cub *cub, char c);
-int		player_flatness(t_cub *cub, char c);
-int		player_position(t_cub *cub, int x, int y);
+int					insert_line_to_map(t_cub *cub, char *line);
+int					check_line_map(char *str);
+int					read_map(int fd, t_cub *cub);
+int					parser(t_cub *cub, char *map);
 
-//sprite4
-int		setup_sprite(t_cub *cub);
-int		count_sprite(t_cub *cub);
-void	pos_sprite(t_cub *cub);
+int					parse_arg(t_cub *cub, char *str);
+int					save_to_cub(t_cub *cub, char *str, int i);
 
-//raycast
-int		raycast(t_cub *cub);
-int		keyrelease(int keycode, t_cub *cub);
-int		keypress(int keycode, t_cub *cub);
-void	move(t_cub *cub);
-void	img_make(t_cub *cub);
-void	monitor_raycast(t_cub *cub, int a);
-void	count_wall_pos_t(t_cub *cub);
-void	count_draw(t_cub *cub);
-void	depict_wall(t_cub *cub, int x);
-void	depict_raycast(t_cub *cub, int x);
-void	paint_texs(t_cub *cub);
-void	classify_spr(int *order, double  *len, int num);
-int		loop(t_cub *cub);
-//sprites
-int		monitor_sprites(t_cub *cub);
-void	count_depict(t_cub *cub, int *order_sp, int i);
-void	paint_sprites(t_cub *cub);
-void	depict_sprite(t_cub *cub, int y, t_image *tex, int band);
-void	run_sprites(t_cub *cub, int *order_sp);
+int					parse_r(t_cub *cub, char *str);
+int					check_res(char **array);
+int					if_res_empty(int width, int height, t_cub *cub);
+int					check_max_res(int width, int height, char **array);
 
-//move
-void	back(t_cub *cub);
-void	sideways(t_cub *cub);
-void	rotate(t_cub *cub, int x);
+int					parse_tex(t_textures *texture, char *str, int a);
+int					if_tex_empty(t_textures *texture, char *str, int i);
+int					check_path(char *way);
+int					check_extension(char *way);
 
-//save
-int		save_to_bmp(t_cub *cub);
-void    type_header(int fd, t_cub *cub, unsigned int pix_line, unsigned int
-fill_bytes_line);
-void      write_pixels(int fd, t_cub *cub, unsigned int pix_line, unsigned
-int fill_bytes_line);
+int					keep_colour(t_cub *cub, char *str, char **array);
+int					check_colour_max_min(char *rgb);
+int					if_color_empty(t_cub *cub, char *str);
+int					check_colour(char **array);
+int					parse_colour(t_cub *cub, char *str);
 
+void				classify_spr(int *order, double *dist, int amount);
+int					raycast(t_cub *cub);
+int					cycle(t_cub *cub);
+void				img_make(t_cub *cub);
+void				paint_texs(t_cub *cub);
 
+void				setup_rsp(t_cub *cub);
+void				setup_arg(t_cub *cub);
+void				setup_raycast(t_cub *cub, int x);
+void				setup_hit(t_cub *cub);
+void				setup_sided(t_cub *cub);
+
+t_image				*make_tex(t_cub *cub, char *way);
+int					setup_textures(t_cub *cub);
+
+int					player_position(t_cub *cub, int x, int y);
+int					player_flatness(t_cub *cub, char c);
+int					player_direct(t_cub *cub, char c);
+int					setup_player(t_cub *cub);
+
+void				pos_sprite(t_cub *cub);
+int					count_sprite(t_cub *cub);
+int					setup_sprite(t_cub *cub);
 #endif

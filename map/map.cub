@@ -1,17 +1,14 @@
 R  1000    800
 
 
-
-F         89,151,   8
+F         89,151,   8 
 C 77,    143, 172
 
-
-NO ./texture/acacia_planks.xpm
-SO ./texture/composter_inside.xpm
-WE                         ./texture/loom_bottom.xpm
-
-EA                                        ./texture/bricks.xpm
-S                     ./texture/mobtr.xpm
+NO ./texture/black.xpm
+SO ./texture/cat.xpm
+WE                         ./texture/2.xpm
+EA                                        ./texture/3.xpm
+S                     ./texture/5.xpm
 
 
 
@@ -30,6 +27,4 @@ S                     ./texture/mobtr.xpm
 11000001110101011111011110N0011
 11110111 1110101 1011110100011
 11111111 1111111 111111111111
-
-
 

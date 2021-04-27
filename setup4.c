@@ -6,13 +6,13 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 22:00:19 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/25 17:39:02 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/27 22:36:55 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	pos_sprite(t_cub *cub)
+void		pos_sprite(t_cub *cub)
 {
 	int		x;
 	int		y;
@@ -39,7 +39,7 @@ void	pos_sprite(t_cub *cub)
 	}
 }
 
-int		count_sprite(t_cub *cub)
+int			count_sprite(t_cub *cub)
 {
 	int		x;
 	int		y;
@@ -54,7 +54,7 @@ int		count_sprite(t_cub *cub)
 		{
 			if (map[x][y] == '2')
 			{
-				cub->raysprite.numsprites++;
+				cub->rsp.numsprites++;
 			}
 			y++;
 		}
@@ -63,13 +63,13 @@ int		count_sprite(t_cub *cub)
 	return (1);
 }
 
-int		setup_sprite(t_cub *cub)
+int			setup_sprite(t_cub *cub)
 {
 	if (!count_sprite(cub))
 		return (0);
-	if (!(cub->sprite = malloc(sizeof(t_sprite) * (cub->raysprite.numsprites))))
+	if (!(cub->sprite = malloc(sizeof(t_sprite) * (cub->rsp.numsprites))))
 		return (0);
-	if (!(cub->raycast.zbuffer = malloc(sizeof(double) * cub->width)))
+	if (!(cub->ray.zbuffer = malloc(sizeof(double) * cub->width)))
 		return (0);
 	pos_sprite(cub);
 	return (1);

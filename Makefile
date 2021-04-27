@@ -2,7 +2,7 @@ NAME = cub3D
 
 LIBFT = /Users/cvesta/Desktop/cub/libft
 
-MLXLIB = /Users/cvesta/Desktop/cub/mlxlib
+MLXLIB = /Users/cvesta/Desktop/cub/mlx
 
 HEADER = cub3d.h
 
@@ -14,28 +14,32 @@ FLAGS = -Wall -Wextra -Werror -I
 
 MLX = -Lmlx -lmlx -framework OpenGL -framework AppKit
 
+CC = gcc
+
+RM = rm -rf
+
 .c.o:
-	@gcc $(FLAGS) $(HEADER) -c $< -o $(<:.c=.o)
+	$(CC) $(FLAGS) $(HEADER) -c $< -o $(<:.c=.o)
 
 all:	$(NAME)
 
 $(NAME):	$(OBJS)
-	@$(MAKE) -C $(LIBFT)
-	@$(MAKE) -C $(MLXLIB)
-	@cp $(MLXLIB)/libmlx.dylib ./
-	@gcc $(OBJS) $(MLX) $(LIBFT)/libft.a -o $(NAME)
+	$(MAKE) -C $(LIBFT)
+	$(MAKE) -C $(MLXLIB)
+	cp $(MLXLIB)/libmlx.dylib ./
+	$(CC) $(OBJS) $(MLX) $(LIBFT)/libft.a -o $(NAME)
 
 clean:
-	@$(MAKE) clean -C $(LIBFT)
-	@$(MAKE) clean -C $(MLXLIB)
-	@rm -rf ./libmlx.dylib
-	@rm -rf $(OBJS)
+	$(MAKE) clean -C $(LIBFT)
+	$(MAKE) clean -C $(MLXLIB)
+	$(RM) ./libmlx.dylib
+	$(RM) $(OBJS)
 
 fclean:     clean
-	@rm -rf $(NAME)
-	@$(MAKE) fclean -C $(LIBFT)
+	$(RM) $(NAME)
+	$(MAKE) fclean -C $(LIBFT)
 
 re:     fclean all
-	@$(MAKE) re -C $(LIBFT)
+	$(MAKE) re -C $(LIBFT)
 
 .PHONY:     all clean fclean re

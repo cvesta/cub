@@ -6,70 +6,69 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 22:38:36 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/25 17:20:19 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/27 22:18:39 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	back(t_cub *cub)
+void	back(t_cub *win)
 {
-	if (cub->keypress.up == 1)
+	if (win->keypress.up == 1)
 	{
-		if (ft_strchr("0SWEN", cub->map[(int)(cub->raycast.pos_x +\
-		cub->raycast.dir_x * cub->raycast.movespeed)][(int)cub->raycast.pos_y]))
-			cub->raycast.pos_x += cub->raycast.dir_x * cub->raycast.movespeed;
-		if (ft_strchr("0SWEN", cub->map[(int)(cub->raycast.pos_x)]\
-		[(int)(cub->raycast.pos_y + cub->raycast.dir_y * cub->raycast.movespeed)]))
-			cub->raycast.pos_y += cub->raycast.dir_y * cub->raycast.movespeed;
+		if (ft_strchr("0SWEN", win->map[(int)(win->ray.x_posit +\
+		win->ray.x_dir * win->ray.mvspeed)][(int)win->ray.y_posit]))
+			win->ray.x_posit += win->ray.x_dir * win->ray.mvspeed;
+		if (ft_strchr("0SWEN", win->map[(int)(win->ray.x_posit)]\
+		[(int)(win->ray.y_posit + win->ray.y_dir * win->ray.mvspeed)]))
+			win->ray.y_posit += win->ray.y_dir * win->ray.mvspeed;
 	}
-	if (cub->keypress.down == 1)
+	if (win->keypress.down == 1)
 	{
-		if (ft_strchr("0SWEN", cub->map[(int)(cub->raycast.pos_x -\
-		cub->raycast.dir_x * cub->raycast.movespeed)][(int)(cub->raycast.pos_y)]))
-			cub->raycast.pos_x -= cub->raycast.dir_x * cub->raycast.movespeed;
-		if (ft_strchr("0SWEN", cub->map[(int)(cub->raycast.pos_x)]\
-		[(int)(cub->raycast.pos_y - cub->raycast.dir_y * cub->raycast.movespeed)]))
-			cub->raycast.pos_y -= cub->raycast.dir_y * cub->raycast.movespeed;
+		if (ft_strchr("0SWEN", win->map[(int)(win->ray.x_posit -\
+		win->ray.x_dir * win->ray.mvspeed)][(int)(win->ray.y_posit)]))
+			win->ray.x_posit -= win->ray.x_dir * win->ray.mvspeed;
+		if (ft_strchr("0SWEN", win->map[(int)(win->ray.x_posit)]\
+		[(int)(win->ray.y_posit - win->ray.y_dir * win->ray.mvspeed)]))
+			win->ray.y_posit -= win->ray.y_dir * win->ray.mvspeed;
 	}
 }
 
-void	sideways(t_cub *cub)
+void	sidelong(t_cub *win)
 {
-	if (cub->keypress.left == 1)
+	if (win->keypress.left == 1)
 	{
-		if (ft_strchr("0SWEN", cub->map[(int)(cub->raycast.pos_x)]\
-		[(int)(cub->raycast.pos_y + cub->raycast.dir_x * cub->raycast.movespeed)]))
-			cub->raycast.pos_y -= -cub->raycast.dir_x * cub->raycast.movespeed;
-		if (ft_strchr("0SWEN", cub->map[(int)(cub->raycast.pos_x -\
-		cub->raycast.dir_y * cub->raycast.movespeed)][(int)(cub->raycast
-		.pos_y)]))
-			cub->raycast.pos_x -= cub->raycast.dir_y * cub->raycast.movespeed;
+		if (ft_strchr("0SWEN", win->map[(int)(win->ray.x_posit)]\
+		[(int)(win->ray.y_posit + win->ray.x_dir * win->ray.mvspeed)]))
+			win->ray.y_posit -= -win->ray.x_dir * win->ray.mvspeed;
+		if (ft_strchr("0SWEN", win->map[(int)(win->ray.x_posit -\
+		win->ray.y_dir * win->ray.mvspeed)][(int)(win->ray.y_posit)]))
+			win->ray.x_posit -= win->ray.y_dir * win->ray.mvspeed;
 	}
-	if (cub->keypress.right == 1)
+	if (win->keypress.right == 1)
 	{
-		if (ft_strchr("0SWEN", cub->map[(int)(cub->raycast.pos_x)]\
-		[(int)(cub->raycast.pos_y - cub->raycast.dir_x * cub->raycast.movespeed)]))
-			cub->raycast.pos_y += -cub->raycast.dir_x * cub->raycast.movespeed;
-		if (ft_strchr("0SWEN", cub->map[(int)(cub->raycast.pos_x +\
-		cub->raycast.dir_y * cub->raycast.movespeed)][(int)(cub->raycast.pos_y)]))
-			cub->raycast.pos_x += cub->raycast.dir_y * cub->raycast.movespeed;
+		if (ft_strchr("0SWEN", win->map[(int)(win->ray.x_posit)]\
+		[(int)(win->ray.y_posit - win->ray.x_dir * win->ray.mvspeed)]))
+			win->ray.y_posit += -win->ray.x_dir * win->ray.mvspeed;
+		if (ft_strchr("0SWEN", win->map[(int)(win->ray.x_posit +\
+		win->ray.y_dir * win->ray.mvspeed)][(int)(win->ray.y_posit)]))
+			win->ray.x_posit += win->ray.y_dir * win->ray.mvspeed;
 	}
 }
 
-void	rotate(t_cub *cub, int x)
+void	revolve(t_cub *win, int a)
 {
-	double	olddirx;
-	double	oldplanex;
+	double	dir_oldx;
+	double	flat_old_x;
 
-	olddirx = cub->raycast.dir_x;
-	cub->raycast.dir_x = cub->raycast.dir_x * cos(x * cub->raycast.movespeed)\
-			- cub->raycast.dir_y * sin(x * cub->raycast.movespeed);
-	cub->raycast.dir_y = olddirx * sin(x * cub->raycast.movespeed) + cub->raycast.dir_y\
-			* cos(x * cub->raycast.movespeed);
-	oldplanex = cub->raycast.flat_x;
-	cub->raycast.flat_x = cub->raycast.flat_x * cos(x * cub->raycast.movespeed)\
-			- cub->raycast.flat_y * sin(x * cub->raycast.movespeed);
-	cub->raycast.flat_y = oldplanex * sin(x * cub->raycast.movespeed)\
-			+ cub->raycast.flat_y * cos(x * cub->raycast.movespeed);
+	dir_oldx = win->ray.x_dir;
+	win->ray.x_dir = win->ray.x_dir * cos(a * win->ray.mvspeed)\
+			- win->ray.y_dir * sin(a * win->ray.mvspeed);
+	win->ray.y_dir = dir_oldx * sin(a * win->ray.mvspeed) + win->ray.y_dir\
+			* cos(a * win->ray.mvspeed);
+	flat_old_x = win->ray.x_flat;
+	win->ray.x_flat = win->ray.x_flat * cos(a * win->ray.mvspeed)\
+			- win->ray.y_flat * sin(a * win->ray.mvspeed);
+	win->ray.y_flat = flat_old_x * sin(a * win->ray.mvspeed)\
+			+ win->ray.y_flat * cos(a * win->ray.mvspeed);
 }

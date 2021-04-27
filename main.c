@@ -6,15 +6,15 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 19:04:00 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/08 19:07:10 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/27 21:48:55 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int		main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
-	t_cub cub;
+	t_cub	cub;
 
 	if (!check_argc(argc, argv[1], argv[2]))
 		return (0);
@@ -23,15 +23,17 @@ int		main(int argc, char **argv)
 		cub.save = 1;
 	if (!parser(&cub, argv[1]))
 	{
-		clear(&cub);
+		free_all(&cub);
 		return (0);
 	}
-	if (!setup_player(&cub) || !setup_sprite(&cub) || !raycast(&cub))
+	if (!setup_player(&cub) ||
+		!setup_sprite(&cub) ||
+		!raycast(&cub))
 	{
-		ft_putstr_fd("error\nsetting up error\n", 1);
-		clear(&cub);
+		ft_putstr_fd(":(\nsetting up error\n", 1);
+		free_all(&cub);
 		return (0);
 	}
-	clear(&cub);
+	free_all(&cub);
 	return (1);
 }

@@ -6,39 +6,39 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 15:09:29 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/25 17:23:06 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/27 22:21:47 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int		new_line_map(t_cub *cub, char *line)
+int				insert_line_to_map(t_cub *cub, char *line)
 {
-	char	**arr;
-	int 	i;
+	char		**array;
+	int			i;
 
-	arr = ft_calloc(cub->sizemapline + 2, sizeof(char *));
-	if (!arr)
+	array = ft_calloc(cub->line_size + 2, sizeof(char *));
+	if (!array)
 		return (0);
 	i = -1;
-	while (++i < cub->sizemapline)
-		arr[i] = cub->map[i];
+	while (++i < cub->line_size)
+		array[i] = cub->map[i];
 	free(cub->map);
-	arr[cub->sizemapline] = ft_strdup(line);
-	arr[cub->sizemapline + 1] = NULL;
-	cub->sizemapline++;
-	cub->map = arr;
+	array[cub->line_size] = ft_strdup(line);
+	array[cub->line_size + 1] = NULL;
+	cub->line_size++;
+	cub->map = array;
 	return (1);
 }
 
-int		check_line_map(char *str)
+int				check_line_map(char *str)
 {
-	int		i;
+	int			i;
 
 	i = 0;
 	if (str[i] == '\n' || str[i] == '\0')
 		return (0);
-	while (str[i] && make_space((str[i])))
+	while (str[i] && make_space(str[i]))
 		i++;
 	if (ft_strchr("1", str[i]))
 		return (1);
@@ -47,12 +47,12 @@ int		check_line_map(char *str)
 	return (0);
 }
 
-int		read_map(int fd, t_cub *cub)
+int				read_map(int fd, t_cub *cub)
 {
-	char	*line;
-	int		i;
+	char		*line;
+	int			a;
 
-	i = 1;
+	a = 1;
 	while (get_next_line(fd, &line))
 	{
 		if (!(parse_arg(cub, line)))
@@ -60,34 +60,34 @@ int		read_map(int fd, t_cub *cub)
 			free(line);
 			return (0);
 		}
-		if (check_empty_arg(cub, 0) && check_line_map(line) &&
-			!new_line_map(cub, line))
+		if (if_arg_empty(cub, 0) && check_line_map(line) &&
+			!insert_line_to_map(cub, line))
 			return (0);
-		i++;
+		a++;
 		free(line);
 	}
-	if (check_empty_arg(cub, 0) && check_line_map(line) &&
-	!new_line_map(cub, line))
+	if (if_arg_empty(cub, 0) && check_line_map(line) &&
+		!insert_line_to_map(cub, line))
 		return (0);
 	free(line);
 	return (1);
 }
 
-int		parser(t_cub *cub, char *map)
+int				parser(t_cub *cub, char *map)
 {
-	int		fd;
+	int			fd;
 
 	fd = open(map, O_RDONLY);
-	if (!read_map(fd, cub) || !check_empty_arg(cub, 1))
-		return (0);
 	if (fd == -1)
 	{
-		ft_putstr_fd("error\nno such file or directory\n", 1);
+		ft_putstr_fd(":(\nno such file or dir\n", 1);
 		return (0);
 	}
+	if (!read_map(fd, cub) || !if_arg_empty(cub, 1))
+		return (0);
 	if (!check_map(cub->map))
 	{
-		ft_putstr_fd("error\ninvalid map\n", 1);
+		ft_putstr_fd(":(\ninvalid map\n", 1);
 		return (0);
 	}
 	return (1);

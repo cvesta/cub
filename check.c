@@ -6,61 +6,62 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 16:28:30 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/25 17:09:09 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/27 21:47:49 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int		check_argc(int ac, char *map, char *save)
+int			check_argc(int argc, char *map, char *save)
 {
-	char	*osh;
+	char	*mistake;
 
-	osh = NULL;
-	if (ac == 1)
-		osh = "ft_putstr_fd(""error\nnot enough arguments\n";
-	if (ac == 2)
+	mistake = NULL;
+	if (argc == 1)
+		mistake = ":(\ntoo few arguments\n";
+	if (argc == 2)
 	{
 		if (ft_strncmp(map + ft_strlen(map) - 4, ".cub", 4) != 0)
-			osh = "error\ninvalid file extension\n";
+			mistake = ":(\nincorrect extension\n";
 	}
-	if (ac == 3)
+	if (argc == 3)
 	{
 		if (ft_strncmp(save, "--save", 6) != 0)
-			osh = "error\ninvalid value for '--save'\n";
+			mistake = ":(\ninvalid value for '--save'\n";
 	}
-	if (ac > 3)
-		osh = "error\ntoo many arguments";
-	if (osh)
+	if (argc > 3)
+		mistake = ":(\ntoo many arguments";
+	if (mistake)
 	{
-		ft_putstr_fd(osh, 1);
+		ft_putstr_fd(mistake, 1);
 		return (0);
 	}
 	return (1);
 }
 
-int		check_empty_arg(t_cub *cub, int map)
+int			if_arg_empty(t_cub *cub, int check_map)
 {
-	if ((cub->width == -1) || (cub->height == -1) || (cub->down == -1) ||
-	(cub->up == -1) || (cub->textures.north == 0) || (cub->textures.south ==
-	0) || (cub->textures.west == 0) || (cub->textures.east == 0) ||
-	(cub->textures.sprite == 0))
+	if ((cub->width == -1) || (cub->height == -1) ||
+		(cub->floor == -1) || (cub->ceiling == -1) ||
+		(cub->texture.north == NULL) || (cub->texture.south == NULL) ||
+		(cub->texture.west == NULL) || (cub->texture.east == NULL) ||
+		(cub->texture.s == NULL))
 	{
-		if (map && (cub->map == 0))
-			ft_putstr_fd("error\nnot enough map arguments\n", 1);
+		if (check_map && (cub->map == NULL))
+			ft_putstr_fd(":(\ntoo few arguments for map\n", 1);
 		return (0);
 	}
 	return (1);
 }
 
-int		check_number(char *num)
+int			check_number(char *str)
 {
 	int		i;
 
 	i = 0;
-	while (num[i])
+	while (str[i])
 	{
-		if (!ft_isdigit(num[i]))
+		if (!ft_isdigit(str[i]))
 			return (0);
 		i++;
 	}

@@ -6,45 +6,45 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 19:47:43 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/24 20:52:49 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/27 22:34:40 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_image	*make_tex(t_cub *cub, char *way)
+t_image		*make_tex(t_cub *cub, char *way)
 {
-	t_image *texture;
+	t_image *tex;
 
-	if (!(texture = malloc(sizeof(t_image))))
+	if (!(tex = malloc(sizeof(t_image))))
 		return (NULL);
-	if (!(texture->img = mlx_xpm_file_to_image(cub->mlx, (char *)way,
-										   &texture->width, &texture->height)))
+	if (!(tex->image = mlx_xpm_file_to_image(cub->mlx, (char *)way,
+	&tex->width, &tex->height)))
 	{
-		free(texture);
+		free(tex);
 		return (NULL);
 	}
-	if (!(texture->addr = mlx_get_data_addr(texture->img, &texture->bpp,
-										&texture->len_line, &texture->endian)))
+	if (!(tex->addr = mlx_get_data_addr(tex->image, &tex->bpp,
+										&tex->len_line, &tex->endian)))
 	{
-		free(texture->img);
-		free(texture);
+		free(tex->image);
+		free(tex);
 		return (NULL);
 	}
-	return (texture);
+	return (tex);
 }
 
-int		setup_textures(t_cub *cub)
+int			setup_textures(t_cub *cub)
 {
-	if ((cub->texs.south = make_tex(cub, cub->textures.south)) == NULL)
+	if ((cub->tex.south = make_tex(cub, cub->texture.south)) == NULL)
 		return (0);
-	if ((cub->texs.north = make_tex(cub, cub->textures.north)) == NULL)
+	if ((cub->tex.north = make_tex(cub, cub->texture.north)) == NULL)
 		return (0);
-	if ((cub->texs.west = make_tex(cub, cub->textures.west)) == NULL)
+	if ((cub->tex.east = make_tex(cub, cub->texture.east)) == NULL)
 		return (0);
-	if ((cub->texs.east = make_tex(cub, cub->textures.east)) == NULL)
+	if ((cub->tex.west = make_tex(cub, cub->texture.west)) == NULL)
 		return (0);
-	if ((cub->texs.sprite = make_tex(cub, cub->textures.sprite)) == NULL)
+	if ((cub->tex.s = make_tex(cub, cub->texture.s)) == NULL)
 		return (0);
 	return (1);
 }

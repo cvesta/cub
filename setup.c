@@ -6,26 +6,26 @@
 /*   By: cvesta <cvesta@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/24 14:04:45 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/25 17:28:36 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/27 22:58:05 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	setup_raysp(t_cub *cub)
+void	setup_rsp(t_cub *cub)
 {
-	cub->raysprite.sprite_x = 0;
-	cub->raysprite.sprite_y = 0;
-	cub->raysprite.tx = 0;
-	cub->raysprite.ty = 0;
-	cub->raysprite.screen_x = 0;
-	cub->raysprite.height = 0;
-	cub->raysprite.start_y = 0;
-	cub->raysprite.width = 0;
-	cub->raysprite.start_x = 0;
-	cub->raysprite.end_x = 0;
-	cub->raysprite.tex_x = 0;
-	cub->raysprite.tex_y = 0;
+	cub->rsp.x_sprite = 0;
+	cub->rsp.y_sprite = 0;
+	cub->rsp.tx = 0;
+	cub->rsp.ty = 0;
+	cub->rsp.x_screen = 0;
+	cub->rsp.height = 0;
+	cub->rsp.y_start = 0;
+	cub->rsp.width = 0;
+	cub->rsp.x_start = 0;
+	cub->rsp.x_end = 0;
+	cub->rsp.x_tex = 0;
+	cub->rsp.y_tex = 0;
 	cub->keypress.up = 0;
 	cub->keypress.down = 0;
 	cub->keypress.left = 0;
@@ -38,95 +38,91 @@ void	setup_arg(t_cub *cub)
 {
 	cub->width = -1;
 	cub->height = -1;
-	cub->textures.north = NULL;
-	cub->textures.south = NULL;
-	cub->textures.west = NULL;
-	cub->textures.east = NULL;
-	cub->textures.sprite = NULL;
-	cub->texs.north = NULL;
-	cub->texs.south = NULL;
-	cub->texs.west = NULL;
-	cub->texs.east = NULL;
-	cub->texs.sprite = NULL;
-	cub->down = -1;
-	cub->up = - 1;
+	cub->texture.north = NULL;
+	cub->texture.south = NULL;
+	cub->texture.west = NULL;
+	cub->texture.east = NULL;
+	cub->texture.s = NULL;
+	cub->tex.north = NULL;
+	cub->tex.south = NULL;
+	cub->tex.west = NULL;
+	cub->tex.east = NULL;
+	cub->tex.s = NULL;
+	cub->floor = -1;
+	cub->ceiling = -1;
 	cub->map = NULL;
-	cub->img.img = NULL;
+	cub->image.image = NULL;
 	cub->save = 0;
-	cub->sizemapline = 0;
-	cub->raysprite.numsprites = 0;
-	setup_raysp(cub);
+	cub->line_size = 0;
+	cub->rsp.numsprites = 0;
+	setup_rsp(cub);
 }
 
-void	setup_raycast(t_cub *cub, int a)
+void	setup_raycast(t_cub *cub, int x)
 {
-	cub->raycast.camera_x = 2 * a / (double)cub->width - 1;
-	cub->raycast.raydir_x = cub->raycast.dir_x + cub->raycast.flat_x *
-			cub->raycast.camera_x;
-	cub->raycast.raydir_y = cub->raycast.dir_y + cub->raycast.flat_y *
-			cub->raycast.camera_x;
-	cub->raycast.map_x = (int)cub->raycast.pos_x;
-	cub->raycast.map_y = (int)cub->raycast.pos_y;
-	cub->raycast.deltadist_x = sqrt(1 + (cub->raycast.raydir_y * cub->raycast
-			.raydir_y)\
-	/ (cub->raycast.raydir_x * cub->raycast.raydir_x));
-	cub->raycast.deltadist_y = sqrt(1 + (cub->raycast.raydir_x * cub->raycast
-			.raydir_x)\
-	/ (cub->raycast.raydir_y * cub->raycast.raydir_y));
-	cub->raycast.hit = 0;
+	cub->ray.x_cam = 2 * x / (double)cub->width - 1;
+	cub->ray.x_raydir = cub->ray.x_dir + cub->ray.x_flat * cub->ray.x_cam;
+	cub->ray.y_raydir = cub->ray.y_dir + cub->ray.y_flat * cub->ray.x_cam;
+	cub->ray.x_map = (int)cub->ray.x_posit;
+	cub->ray.y_map = (int)cub->ray.y_posit;
+	cub->ray.x_deltad = sqrt(1 + (cub->ray.y_raydir * cub->ray.y_raydir)\
+	/ (cub->ray.x_raydir * cub->ray.x_raydir));
+	cub->ray.y_deltad = sqrt(1 + (cub->ray.x_raydir * cub->ray.x_raydir)\
+	/ (cub->ray.y_raydir * cub->ray.y_raydir));
+	cub->ray.hit = 0;
 }
 
 void	setup_hit(t_cub *cub)
 {
-	while (cub->raycast.hit == 0)
+	while (cub->ray.hit == 0)
 	{
-		if (cub->raycast.side_x < cub->raycast.side_y)
+		if (cub->ray.x_side < cub->ray.y_side)
 		{
-			cub->raycast.side_x += cub->raycast.deltadist_x;
-			cub->raycast.map_x += cub->raycast.step_x;
-			if (cub->raycast.step_x == 1)
-				cub->raycast.side = 0;
-			else if (cub->raycast.step_x == -1)
-				cub->raycast.side = 1;
+			cub->ray.x_side += cub->ray.x_deltad;
+			cub->ray.x_map += cub->ray.x_step;
+			if (cub->ray.x_step == 1)
+				cub->ray.side = 0;
+			else if (cub->ray.x_step == -1)
+				cub->ray.side = 1;
 		}
 		else
 		{
-			cub->raycast.side_y += cub->raycast.deltadist_y;
-			cub->raycast.map_y += cub->raycast.step_y;
-			if (cub->raycast.step_y == 1)
-				cub->raycast.side = 2;
-			else if (cub->raycast.step_y == -1)
-				cub->raycast.side = 3;
+			cub->ray.y_side += cub->ray.y_deltad;
+			cub->ray.y_map += cub->ray.y_step;
+			if (cub->ray.y_step == 1)
+				cub->ray.side = 2;
+			else if (cub->ray.y_step == -1)
+				cub->ray.side = 3;
 		}
-		if (!ft_strchr("02NSWE", cub->map[cub->raycast.map_x][cub->raycast.map_y]))
-			cub->raycast.hit = 1;
+		if (!ft_strchr("02NSWE", cub->map[cub->ray.x_map][cub->ray.y_map]))
+			cub->ray.hit = 1;
 	}
 }
 
 void	setup_sided(t_cub *cub)
 {
-	if (cub->raycast.raydir_x < 0)
+	if (cub->ray.x_raydir < 0)
 	{
-		cub->raycast.step_x = -1;
-		cub->raycast.side_y = (cub->raycast.pos_x - cub->raycast.map_x)\
-		* cub->raycast.deltadist_x;
+		cub->ray.x_step = -1;
+		cub->ray.x_side = (cub->ray.x_posit - cub->ray.x_map)\
+		* cub->ray.x_deltad;
 	}
 	else
 	{
-		cub->raycast.step_x = 1;
-		cub->raycast.side_y = (cub->raycast.map_x + 1.0 - cub->raycast.pos_x)\
-		* cub->raycast.deltadist_x;
+		cub->ray.x_step = 1;
+		cub->ray.x_side = (cub->ray.x_map + 1.0 - cub->ray.x_posit)\
+		* cub->ray.x_deltad;
 	}
-	if (cub->raycast.raydir_y < 0)
+	if (cub->ray.y_raydir < 0)
 	{
-		cub->raycast.step_y = -1;
-		cub->raycast.side_y = (cub->raycast.pos_y - cub->raycast.map_y)\
-		* cub->raycast.deltadist_y;
+		cub->ray.y_step = -1;
+		cub->ray.y_side = (cub->ray.y_posit - cub->ray.y_map)\
+		* cub->ray.y_deltad;
 	}
 	else
 	{
-		cub->raycast.step_y = 1;
-		cub->raycast.side_y = (cub->raycast.map_y + 1.0 - cub->raycast.pos_y)\
-		* cub->raycast.deltadist_y;
+		cub->ray.y_step = 1;
+		cub->ray.y_side = (cub->ray.y_map + 1.0 - cub->ray.y_posit)\
+		* cub->ray.y_deltad;
 	}
 }

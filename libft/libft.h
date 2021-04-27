@@ -6,7 +6,7 @@
 /*   By: cvesta <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/06 17:39:02 by cvesta            #+#    #+#             */
-/*   Updated: 2021/04/25 17:46:11 by cvesta           ###   ########.fr       */
+/*   Updated: 2021/04/27 21:29:52 by cvesta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ size_t	ft_strlen(const char *s);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 int		get_next_line(int fd, char **line);
-//char	*ft_strdup(const char *s1);
-//char	*ft_strjoin(const char *s1, const char *s2);
 char	*ft_strcpy(char *dest, char *src);
-//char	*ft_strchr(const char *s, int c);
+
 #endif
