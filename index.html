@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="InvestLab" />
+  <meta name="theme-color" content="#07080c" />
+  <title>InvestLab — Симулятор финансовой грамотности</title>
+  <link rel="manifest" href='data:application/json,{"name":"InvestLab","short_name":"InvestLab","display":"standalone","background_color":"%2307080c","theme_color":"%2307080c"}' />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Helvetica','Arial','sans-serif'] },
+          colors: {
+            base:   '#07080c',
+            panel:  '#111420',
+            panel2: '#171b2b',
+            stroke: '#232838',
+            neon:   '#00e5a0',
+            neon2:  '#12b4ff',
+            grape:  '#8b5cf6',
+            gold:   '#ffce4d',
+            danger: '#ff5470',
+            muted:  '#8a92a6'
+          },
+          boxShadow: {
+            glow:  '0 0 24px -6px rgba(0,229,160,.55)',
+            glow2: '0 0 24px -6px rgba(18,180,255,.5)',
+            soft:  '0 18px 40px -18px rgba(0,0,0,.8)'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html,body{ -webkit-tap-highlight-color:transparent; }
+    body{ background:
+      radial-gradient(90% 60% at 15% -5%, rgba(0,229,160,.10), transparent 60%),
+      radial-gradient(80% 50% at 95% 0%, rgba(139,92,246,.12), transparent 55%),
+      #07080c; }
+    .glass{ background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01)); backdrop-filter:blur(8px); }
+    .no-spin::-webkit-outer-spin-button,.no-spin::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+    .no-spin{ -moz-appearance:textfield; }
+    .pulse-dot{ animation:pulse 1.4s ease-in-out infinite; }
+    @keyframes pulse{ 0%,100%{ opacity:.35; transform:scale(.9);} 50%{ opacity:1; transform:scale(1.15);} }
+    .slide{ max-height:0; overflow:hidden; transition:max-height .45s cubic-bezier(.22,1,.36,1), opacity .35s ease; opacity:0; }
+    .slide.open{ max-height:520px; opacity:1; }
+    .tap:active{ transform:scale(.97); }
+    ::selection{ background:rgba(0,229,160,.35); }
+    .scroll-hide{ scrollbar-width:none; } .scroll-hide::-webkit-scrollbar{ display:none; }
+  </style>
+</head>
+<body class="text-white font-sans min-h-screen antialiased">
+
+  <div class="mx-auto w-full max-w-md min-h-screen flex flex-col pb-10" style="padding-top:env(safe-area-inset-top);">
+
+    <!-- Header -->
+    <header class="px-5 pt-6 pb-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-neon to-neon2 shadow-glow flex items-center justify-center font-black text-base text-base">IL</div>
+        <div>
+          <div class="text-[15px] font-bold leading-tight">InvestLab</div>
+          <div class="text-[11px] text-muted">Учебный симулятор · демо-режим</div>
+        </div>
+      </div>
+      <div class="text-[10px] uppercase tracking-widest text-neon border border-neon/30 rounded-full px-3 py-1 bg-neon/5">Game</div>
+    </header>
+
+    <!-- Total card -->
+    <section class="px-5">
+      <div class="rounded-3xl p-5 glass border border-stroke shadow-soft relative overflow-hidden">
+        <div class="absolute -right-8 -top-10 w-40 h-40 rounded-full bg-neon/10 blur-2xl"></div>
+        <div class="text-[12px] text-muted">Суммарный игровой капитал</div>
+        <div class="mt-1 flex items-end gap-2">
+          <div id="totalWealth" class="text-[34px] font-black tracking-tight leading-none">—</div>
+          <div class="text-neon text-[13px] font-semibold mb-1">₽</div>
+        </div>
+        <div class="mt-2 text-[12px] text-neon flex items-center gap-1">
+          <span>▲</span><span>Стратегия «Агрессивный рост» активна</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Asset cards -->
+    <section class="px-5 mt-4 grid grid-cols-3 gap-3">
+      <div class="rounded-2xl p-3 glass border border-stroke">
+        <div class="w-8 h-8 rounded-xl bg-neon/15 text-neon flex items-center justify-center text-[15px]">₽</div>
+        <div class="mt-2 text-[11px] text-muted leading-tight">Рублевый кэш</div>
+        <div id="rubCash" class="mt-1 text-[14px] font-bold">—</div>
+      </div>
+      <div class="rounded-2xl p-3 glass border border-stroke">
+        <div class="w-8 h-8 rounded-xl bg-neon2/15 text-neon2 flex items-center justify-center text-[15px]">$</div>
+        <div class="mt-2 text-[11px] text-muted leading-tight">Валютный резерв</div>
+        <div id="fxReserve" class="mt-1 text-[14px] font-bold">—</div>
+      </div>
+      <div class="rounded-2xl p-3 glass border border-stroke">
+        <div class="w-8 h-8 rounded-xl bg-grape/20 text-grape flex items-center justify-center text-[15px]">◈</div>
+        <div class="mt-2 text-[11px] text-muted leading-tight">Крипто-активы</div>
+        <div id="crypto" class="mt-1 text-[14px] font-bold">—</div>
+      </div>
+    </section>
+
+    <!-- Incubator chart -->
+    <section class="px-5 mt-4">
+      <div class="rounded-3xl p-5 glass border border-stroke shadow-soft">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-[13px] font-bold">Инкубатор доходности</div>
+            <div class="text-[11px] text-muted">Симуляция высокодоходного трейдинга · 7 дней</div>
+          </div>
+          <div class="text-right">
+            <div class="text-[10px] text-muted">В инкубаторе</div>
+            <div id="incubator" class="text-[15px] font-black text-neon">—</div>
+          </div>
+        </div>
+        <div class="mt-4 h-44"><canvas id="growthChart"></canvas></div>
+        <div class="mt-2 text-[10px] text-muted leading-snug">
+          Модель: <span class="text-white/70">старт × 1.30<sup>i</sup></span> — учебная демонстрация сложного процента. Реальные рынки так себя не ведут.
+        </div>
+      </div>
+    </section>
+
+    <!-- Withdraw / fix profit -->
+    <section class="px-5 mt-4">
+      <div class="rounded-3xl p-5 glass border border-stroke shadow-soft">
+        <div class="text-[13px] font-bold">Фиксация прибыли</div>
+        <div class="text-[11px] text-muted">Перевод из инкубатора в рублевый кэш</div>
+
+        <label class="block mt-4 text-[11px] text-muted">Сумма вывода, ₽</label>
+        <div class="mt-1 flex items-center rounded-2xl border border-stroke bg-panel2/60 px-4 py-3 focus-within:border-neon/60 transition">
+          <span class="text-muted text-[15px] mr-2">₽</span>
+          <input id="amount" type="number" inputmode="numeric" min="0" placeholder="0" class="no-spin bg-transparent outline-none w-full text-[18px] font-bold placeholder:text-muted/50" />
+        </div>
+
+        <div class="mt-2 flex gap-2">
+          <button data-quick="25000"  class="tap flex-1 text-[11px] py-2 rounded-xl border border-stroke text-muted hover:text-white active:border-neon/50">25 000</button>
+          <button data-quick="100000" class="tap flex-1 text-[11px] py-2 rounded-xl border border-stroke text-muted hover:text-white active:border-neon/50">100 000</button>
+          <button data-quick="max"    class="tap flex-1 text-[11px] py-2 rounded-xl border border-stroke text-muted hover:text-white active:border-neon/50">MAX</button>
+        </div>
+
+        <div class="mt-4 space-y-2 text-[13px]">
+          <div class="flex justify-between"><span class="text-muted">Сумма к выводу</span><span id="rowAmount" class="font-semibold">0 ₽</span></div>
+          <div class="flex justify-between"><span class="text-muted">Комиссия брокера <span class="text-[10px] text-muted/70">(2%, мин. 3 000)</span></span><span id="rowFee" class="font-semibold text-gold">0 ₽</span></div>
+          <div class="h-px bg-stroke my-1"></div>
+          <div class="flex justify-between text-[15px]"><span class="font-semibold">Итого списание</span><span id="rowTotal" class="font-black text-danger">0 ₽</span></div>
+        </div>
+
+        <button id="fixBtn" class="tap mt-5 w-full py-4 rounded-2xl font-bold text-base bg-gradient-to-r from-neon to-neon2 shadow-glow disabled:opacity-40 disabled:shadow-none">
+          Зафиксировать прибыль
+        </button>
+
+        <!-- Status -->
+        <div id="statusBox" class="mt-4 hidden rounded-2xl border p-4">
+          <div class="flex items-center gap-3">
+            <span id="statusDot" class="w-2.5 h-2.5 rounded-full"></span>
+            <div>
+              <div id="statusText" class="text-[13px] font-semibold"></div>
+              <div id="statusSub" class="text-[11px] text-muted"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dev panel toggle -->
+    <section class="px-5 mt-6">
+      <button id="devToggle" class="tap w-full text-[12px] text-muted flex items-center justify-center gap-2 py-3 rounded-2xl border border-dashed border-stroke hover:text-white transition">
+        <span>⚙</span><span>Открыть скрытую панель разработчика игры</span>
+      </button>
+
+      <div id="devPanel" class="slide mt-3">
+        <div class="rounded-3xl p-5 border border-grape/30 bg-grape/5">
+          <div class="text-[12px] font-bold text-grape">Панель симулятора событий</div>
+          <div class="text-[11px] text-muted mt-1">Ручное тестирование ответа брокера по заявке в обработке.</div>
+          <div class="mt-4 grid grid-cols-2 gap-3">
+            <button id="devConfirm" class="tap py-3 rounded-2xl font-semibold text-[13px] bg-neon/15 text-neon border border-neon/40 disabled:opacity-30">
+              ✓ Подтвердить
+            </button>
+            <button id="devReject" class="tap py-3 rounded-2xl font-semibold text-[13px] bg-danger/15 text-danger border border-danger/40 disabled:opacity-30">
+              ✕ Отклонить / сбой
+            </button>
+          </div>
+          <div class="mt-3 text-[10px] text-muted leading-snug">
+            «Отклонить» имитирует системный сбой: списанные средства и комиссия возвращаются на баланс инкубатора.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="px-5 mt-8 text-center text-[10px] text-muted/70 leading-relaxed">
+      InvestLab — учебный тренажёр. Все суммы и активы игровые и не имеют реальной ценности.<br/>Это демонстрация механик, а не инвестиционная рекомендация.
+    </footer>
+  </div>
+
+  <script>
+  (function(){
+    'use strict';
+
+    const state = {
+      rubCash:   500000,
+      fxReserve: 320450,
+      crypto:    145900,
+      incubator: 287300,
+      pending:   null   // { amount, fee, total }
+    };
+
+    const fmt = n => Math.round(n).toLocaleString('ru-RU');
+    const $ = id => document.getElementById(id);
+
+    // ---- Balances render ----
+    function renderBalances(){
+      $('rubCash').textContent   = fmt(state.rubCash);
+      $('fxReserve').textContent = fmt(state.fxReserve);
+      $('crypto').textContent    = fmt(state.crypto);
+      $('incubator').textContent = fmt(state.incubator) + ' ₽';
+      const total = state.rubCash + state.fxReserve + state.crypto + state.incubator;
+      $('totalWealth').textContent = fmt(total);
+    }
+
+    // ---- Fee calculator ----
+    const calcFee = amount => Math.max(amount * 0.02, 3000);
+
+    function readAmount(){
+      const v = parseFloat($('amount').value);
+      return (isFinite(v) && v > 0) ? v : 0;
+    }
+
+    function renderQuote(){
+      const amount = readAmount();
+      const fee = amount > 0 ? calcFee(amount) : 0;
+      const total = amount + fee;
+      $('rowAmount').textContent = fmt(amount) + ' ₽';
+      $('rowFee').textContent    = fmt(fee) + ' ₽';
+      $('rowTotal').textContent  = fmt(total) + ' ₽';
+
+      const blocked = !!state.pending;
+      $('fixBtn').disabled = blocked || amount <= 0 || total > state.incubator;
+      $('fixBtn').textContent = total > state.incubator && amount > 0
+        ? 'Недостаточно средств в инкубаторе'
+        : 'Зафиксировать прибыль';
+    }
+
+    // ---- Status UI ----
+    function setStatus(kind, text, sub){
+      const box = $('statusBox');
+      box.classList.remove('hidden');
+      const map = {
+        pending: { border:'border-gold/40',   bg:'bg-gold/5',   dot:'bg-gold pulse-dot',   txt:'text-gold' },
+        success: { border:'border-neon/40',   bg:'bg-neon/5',   dot:'bg-neon',             txt:'text-neon' },
+        error:   { border:'border-danger/40', bg:'bg-danger/5', dot:'bg-danger',           txt:'text-danger' }
+      };
+      const c = map[kind];
+      box.className = 'mt-4 rounded-2xl border p-4 ' + c.border + ' ' + c.bg;
+      $('statusDot').className = 'w-2.5 h-2.5 rounded-full ' + c.dot;
+      $('statusText').className = 'text-[13px] font-semibold ' + c.txt;
+      $('statusText').textContent = text;
+      $('statusSub').textContent = sub || '';
+    }
+
+    function refreshDevButtons(){
+      const has = !!state.pending;
+      $('devConfirm').disabled = !has;
+      $('devReject').disabled  = !has;
+    }
+
+    // ---- Actions ----
+    function fixProfit(){
+      if(state.pending) return;
+      const amount = readAmount();
+      if(amount <= 0) return;
+      const fee = calcFee(amount);
+      const total = amount + fee;
+      if(total > state.incubator) return;
+
+      state.incubator -= total;
+      state.pending = { amount, fee, total };
+
+      renderBalances();
+      renderQuote();
+      refreshDevButtons();
+      setStatus('pending', 'Заявка на обработке у брокера',
+        'Списано ' + fmt(total) + ' ₽ (вывод ' + fmt(amount) + ' + комиссия ' + fmt(fee) + '). Ожидается подтверждение.');
+    }
+
+    function confirmTx(){
+      if(!state.pending) return;
+      const { amount } = state.pending;
+      state.rubCash += amount;
+      state.pending = null;
+
+      renderBalances();
+      renderQuote();
+      refreshDevButtons();
+      setStatus('success', 'Успешно зачислено',
+        fmt(amount) + ' ₽ зачислено в рублевый кэш.');
+    }
+
+    function rejectTx(){
+      if(!state.pending) return;
+      const { total } = state.pending;
+      state.incubator += total;   // возврат суммы вместе с комиссией
+      state.pending = null;
+
+      renderBalances();
+      renderQuote();
+      refreshDevButtons();
+      setStatus('error', 'Транзакция отклонена брокером',
+        'Системный сбой. Возвращено ' + fmt(total) + ' ₽ на баланс инкубатора.');
+    }
+
+    // ---- Chart ----
+    function drawChart(){
+      const start = 40000;
+      const labels = [], data = [];
+      for(let i = 0; i < 7; i++){
+        labels.push('День ' + (i + 1));
+        data.push(Math.round(start * Math.pow(1.30, i)));
+      }
+      const ctx = $('growthChart').getContext('2d');
+      const grad = ctx.createLinearGradient(0, 0, 0, 176);
+      grad.addColorStop(0, 'rgba(0,229,160,.35)');
+      grad.addColorStop(1, 'rgba(0,229,160,0)');
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            data,
+            borderColor: '#00e5a0',
+            borderWidth: 2.5,
+            fill: true,
+            backgroundColor: grad,
+            tension: .4,
+            pointRadius: 3,
+            pointBackgroundColor: '#07080c',
+            pointBorderColor: '#00e5a0',
+            pointBorderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#171b2b',
+              borderColor: '#232838',
+              borderWidth: 1,
+              titleColor: '#8a92a6',
+              bodyColor: '#fff',
+              padding: 10,
+              displayColors: false,
+              callbacks: { label: c => fmt(c.parsed.y) + ' ₽' }
+            }
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: '#8a92a6', font: { size: 9 } } },
+            y: {
+              grid: { color: 'rgba(255,255,255,.04)' },
+              ticks: { color: '#8a92a6', font: { size: 9 }, callback: v => (v/1000) + 'k' }
+            }
+          }
+        }
+      });
+    }
+
+    // ---- Wiring ----
+    $('amount').addEventListener('input', renderQuote);
+    $('fixBtn').addEventListener('click', fixProfit);
+    $('devConfirm').addEventListener('click', confirmTx);
+    $('devReject').addEventListener('click', rejectTx);
+
+    document.querySelectorAll('[data-quick]').forEach(b => {
+      b.addEventListener('click', () => {
+        const q = b.getAttribute('data-quick');
+        if(q === 'max'){
+          // максимум, при котором сумма+комиссия помещаются в инкубатор
+          const maxAmt = Math.max(0, Math.floor((state.incubator - 3000)));
+          const solved = Math.floor(state.incubator / 1.02);
+          $('amount').value = Math.max(0, Math.min(maxAmt, solved));
+        } else {
+          $('amount').value = q;
+        }
+        renderQuote();
+      });
+    });
+
+    $('devToggle').addEventListener('click', () => {
+      $('devPanel').classList.toggle('open');
+    });
+
+    // ---- Init ----
+    renderBalances();
+    renderQuote();
+    refreshDevButtons();
+    drawChart();
+  })();
+  </script>
+</body>
+</html>
