@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+<title>Лабиринт: Мужское / Женское</title>
+<meta name="description" content="Мобильная игра-лабиринт с рейкастингом и карточками-спорами" />
+<meta name="theme-color" content="#0a0c10" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<link rel="icon" href="icons/icon-192.png" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="app">
+
+  <section id="screen-start" class="screen active">
+    <div class="eyebrow">Лабиринт-шоу</div>
+    <h1 class="title">Кто здесь<br /><span class="hue-m">прав</span>, а кто <span class="hue-f">виноват</span>?</h1>
+    <p class="subtitle">Пройди лабиринт, находи карточки со спорами и отвечай за свою команду — или против неё.</p>
+    <button class="btn" id="start-play">Играть</button>
+  </section>
+
+  <section id="screen-character" class="screen">
+    <div class="pick-heading">
+      <h2>Выбери сторону</h2>
+      <p>Это просто цвет команды — играть можно за любую</p>
+    </div>
+    <div class="team-cards">
+      <button class="team-card" data-team="m">
+        <span class="glyph">М</span>
+        <span class="label">Мужское</span>
+        <span class="desc">Команда синих карточек</span>
+      </button>
+      <button class="team-card" data-team="f">
+        <span class="glyph">Ж</span>
+        <span class="label">Женское</span>
+        <span class="desc">Команда розовых карточек</span>
+      </button>
+    </div>
+    <button class="btn" id="character-continue" disabled>В лабиринт</button>
+  </section>
+
+  <section id="screen-game" class="screen">
+    <canvas id="game-canvas"></canvas>
+
+    <div class="hud">
+      <div class="hud-chip" id="hud-team">
+        <span class="dot"></span>
+        <span id="hud-team-label">—</span>
+      </div>
+      <div class="hud-chip">
+        Споры: <span id="hud-score">0/0</span>
+      </div>
+    </div>
+
+    <div class="look-zone" id="look-zone"></div>
+    <div class="look-hint">Свайп — поворот</div>
+
+    <div class="stick-zone" id="stick-zone">
+      <div class="stick-knob" id="stick-knob"></div>
+    </div>
+  </section>
+
+  <div id="quiz-overlay">
+    <div class="quiz-card">
+      <div class="quiz-eyebrow">Спор нашёлся</div>
+      <p class="quiz-question" id="quiz-question"></p>
+      <div class="quiz-options" id="quiz-options"></div>
+      <div class="quiz-result" id="quiz-result"></div>
+    </div>
+  </div>
+
+  <section id="screen-end" class="screen">
+    <div class="eyebrow">Итог</div>
+    <div class="verdict-score" id="end-score">0/0</div>
+    <p class="verdict-label" id="end-label">Лабиринт пройден.</p>
+    <button class="btn" id="end-replay">Играть снова</button>
+    <button class="btn btn-ghost" id="end-menu">В меню</button>
+  </section>
+
+</div>
+
+<script src="js/map.js"></script>
+<script src="js/textures.js"></script>
+<script src="js/raycaster.js"></script>
+<script src="js/controls.js"></script>
+<script src="js/character.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
