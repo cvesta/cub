@@ -38,6 +38,17 @@
     document.getElementById("look-zone")
   );
 
+  const audio = createAudioKit();
+
+  document.addEventListener("click", (e) => {
+    const el = e.target.closest(".btn, .team-card, .quiz-option");
+    if (!el) return;
+    audio.unlock();
+    if (el.classList.contains("quiz-option")) audio.pick();
+    else audio.tap();
+    if (navigator.vibrate) navigator.vibrate(el.classList.contains("quiz-option") ? 12 : 8);
+  });
+
   let textures = null;
   let raycasterState = null;
   let usedDisputeIndexes = new Set();
@@ -46,6 +57,7 @@
   let tally = { m: 0, f: 0 };
   let rafId = null;
   let team = null;
+  let bobPhase = 0;
 
   document.getElementById("start-play").addEventListener("click", () => {
     showScreen("character");
@@ -102,6 +114,8 @@
         pendingSprite = sprite;
         const { index, dispute } = pickDispute(usedDisputeIndexes);
         usedDisputeIndexes.add(index);
+        audio.disputeFound();
+        if (navigator.vibrate) navigator.vibrate([10, 40, 10]);
         quizController.open(dispute);
         break;
       }
@@ -128,6 +142,28 @@
     document.getElementById("end-label").textContent =
       `Споров решено: ${total}. ${leader} (${tally.m} : ${tally.f}).`;
     showScreen("end");
+    audio.finish();
+    if (navigator.vibrate) navigator.vibrate([15, 60, 15, 60, 30]);
+    spawnConfetti();
+  }
+
+  const CONFETTI_COLORS = ["#c98a4b", "#3f7c8c", "#b85c76", "#eef1f5"];
+
+  function spawnConfetti() {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const endScreen = screens.end;
+    for (let i = 0; i < 26; i++) {
+      const piece = document.createElement("div");
+      piece.className = "confetti-piece";
+      piece.style.left = `${Math.random() * 100}%`;
+      piece.style.background = CONFETTI_COLORS[i % CONFETTI_COLORS.length];
+      const duration = 1.6 + Math.random() * 1.2;
+      const delay = Math.random() * 0.4;
+      piece.style.animationDuration = `${duration}s`;
+      piece.style.animationDelay = `${delay}s`;
+      endScreen.appendChild(piece);
+      setTimeout(() => piece.remove(), (duration + delay) * 1000 + 100);
+    }
   }
 
   function startLoop() {
@@ -149,14 +185,30 @@
     }
   }
 
-  function step() {
+  const BOB_SPEED = 0.011; // phase advance per ms while moving at full stick push
+  const BOB_AMPLITUDE = 7; // px
+
+  function step(dt) {
+    let moving = false;
     if (!quizController.isOpen()) {
       const move = controls.getMoveVector();
       const look = controls.consumeLookDelta();
       rotatePlayer(raycasterState, look);
       updatePlayerMovement(raycasterState, move);
       checkSpriteProximity();
+      const intensity = Math.min(1, Math.hypot(move.forward, move.strafe));
+      moving = intensity > 0.05;
+      if (moving) {
+        const prevPhase = bobPhase;
+        bobPhase += dt * BOB_SPEED * intensity;
+        if (Math.floor(prevPhase / Math.PI) !== Math.floor(bobPhase / Math.PI)) {
+          audio.footstep();
+          if (navigator.vibrate) navigator.vibrate(4);
+        }
+      }
     }
+    const bobTarget = moving ? Math.sin(bobPhase) * BOB_AMPLITUDE : 0;
+    canvas.style.transform = `translateY(${bobTarget.toFixed(1)}px) scale(1.01)`;
     renderFrame(raycasterState);
   }
 

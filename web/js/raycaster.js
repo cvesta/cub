@@ -4,6 +4,17 @@
 const MOVE_SPEED = 0.06; // per-frame tile fraction at full joystick push, same order of magnitude as cub->ray.mvspeed
 const LOOK_SENSITIVITY = 0.0045; // radians per swipe pixel
 
+const FOG_START = 1.3; // tiles of full brightness before distance fog kicks in
+const FOG_RANGE = 8.5; // tiles over which brightness fades to FOG_MIN
+const FOG_MIN = 0.22;
+const Y_SIDE_SHADE = 0.72; // pseudo directional light: y-axis walls read darker than x-axis walls
+const HORIZON_FALLOFF = 0.4; // how much floor/ceiling darken away from the horizon line
+
+function fogShade(lenRay) {
+  const t = Math.min(1, Math.max(0, (lenRay - FOG_START) / FOG_RANGE));
+  return 1 - t * (1 - FOG_MIN);
+}
+
 function createRaycasterState(canvas, mapState, textures) {
   const offscreen = document.createElement("canvas");
   return {
@@ -55,6 +66,16 @@ function renderFrame(state) {
   const grid = mapState.grid;
   const [fr, fg, fb] = mapState.floorColor;
   const [cr, cg, cb] = mapState.ceilingColor;
+
+  const horizon = height / 2;
+  if (!state.rowShade || state.rowShade.length !== height) {
+    state.rowShade = new Float32Array(height);
+    for (let y = 0; y < height; y++) {
+      const t = Math.min(1, Math.abs(y - horizon) / horizon);
+      state.rowShade[y] = 1 - t * HORIZON_FALLOFF;
+    }
+  }
+  const rowShade = state.rowShade;
 
   for (let x = 0; x < width; x++) {
     const xCam = (2 * x) / width - 1;
@@ -136,14 +157,31 @@ function renderFrame(state) {
     const step = tex.height / heightLine;
     let posTex = (drawStart - height / 2 + heightLine / 2) * step;
 
-    for (let y = 0; y < drawStart; y++) setPixel(buf, width, x, y, cr, cg, cb);
-    for (let y = drawEnd; y < height; y++) setPixel(buf, width, x, y, fr, fg, fb);
+    for (let y = 0; y < drawStart; y++) {
+      const s = rowShade[y];
+      setPixel(buf, width, x, y, cr * s, cg * s, cb * s);
+    }
+    for (let y = drawEnd; y < height; y++) {
+      const s = rowShade[y];
+      setPixel(buf, width, x, y, fr * s, fg * s, fb * s);
+    }
+
+    let wallShade = fogShade(lenRay);
+    if (side === 2 || side === 3) wallShade *= Y_SIDE_SHADE;
 
     for (let y = drawStart; y < drawEnd; y++) {
       const yTex = Math.floor(posTex) % tex.height;
       posTex += step;
       const ti = (((yTex + tex.height) % tex.height) * tex.width + xTex) * 4;
-      setPixel(buf, width, x, y, tex.data[ti], tex.data[ti + 1], tex.data[ti + 2]);
+      setPixel(
+        buf,
+        width,
+        x,
+        y,
+        tex.data[ti] * wallShade,
+        tex.data[ti + 1] * wallShade,
+        tex.data[ti + 2] * wallShade
+      );
     }
   }
 
@@ -182,6 +220,7 @@ function drawSprites(state) {
     const drawEndY = Math.min(height, Math.floor(spriteSize / 2 + height / 2));
     const drawStartX = Math.max(0, Math.floor(-spriteSize / 2 + screenX));
     const drawEndX = Math.min(width, Math.floor(spriteSize / 2 + screenX));
+    const shade = fogShade(transformY);
 
     for (let sx = drawStartX; sx < drawEndX; sx++) {
       if (transformY >= zbuffer[sx]) continue;
@@ -191,7 +230,7 @@ function drawSprites(state) {
         const ti = (texY * tex.width + texX) * 4;
         const alpha = tex.data[ti + 3];
         if (alpha < 64) continue;
-        setPixel(buf, width, sx, sy, tex.data[ti], tex.data[ti + 1], tex.data[ti + 2]);
+        setPixel(buf, width, sx, sy, tex.data[ti] * shade, tex.data[ti + 1] * shade, tex.data[ti + 2] * shade);
       }
     }
   }
